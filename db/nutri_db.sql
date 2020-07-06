@@ -10,7 +10,7 @@ create table if not exists administrador(
     correo varchar(40) not null,
     password varchar(40) not null,
     primary key (nue)
-)ENGINE = INNODB;
+)engine = innodb;
 
 create table if not exists contacto(
 	id int not null auto_increment,
@@ -25,7 +25,7 @@ create table if not exists contacto(
     ciudad varchar(30) not null,
     estado varchar(30) not null,
     primary key(id)
-)ENGINE = INNODB;
+)engine = innodb;
 
 create table if not exists alumno(
 	nua varchar(06) not null,
@@ -107,7 +107,7 @@ create table if not exists riesgo_nutricio(
         on update cascade
 )engine = innodb;
 
-create  table if not exists historia_clinica(
+create  table if not exists historia_medica(
 	id int not null auto_increment,
     cardiovascular boolean not null,
     endocrina boolean not null,
