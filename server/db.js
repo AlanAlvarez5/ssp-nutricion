@@ -1,12 +1,7 @@
 import mysql from 'mysql'
 import { promisify } from 'util'
 
-
-const connection = {
-    host: 'localhost',
-    user: 'root',
-    password: 'easiermean5'
-}
+import { connection } from './configs/config'
 
 const pool = mysql.createPool(connection);
 
