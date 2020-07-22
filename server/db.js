@@ -18,8 +18,13 @@ pool.getConnection((err, connection) => {
         }
     }
 
-    if (connection) connection.release();
-    console.log('Base de datos conectada');
+    if (connection){
+        connection.release();
+        console.log('DB: Conectada');
+    }else{
+        console.log('DB: Fallo en conexión')
+    }
+        
 
     return;
 });
