@@ -1,6 +1,11 @@
-<template>
+<template>     
+     <v-parallax
+          dark
+          height="100%"
+          src="https://cdn.vuetifyjs.com/images/backgrounds/vbanner.jpg"
+     >
           <v-row align="center" justify="center">
-               <v-col align="center">
+               <v-col align="center" justify="center">
                     <v-card
                     class="mx-auto px-5 py-5"
                     max-width="344"
@@ -27,6 +32,7 @@
                     </v-card>
                </v-col>
           </v-row>
+     </v-parallax>
 </template>
 
 <script>
@@ -48,7 +54,7 @@ export default {
           correo: 'usuario@mail.com',
           password: 'usuario',
           mensaje: '',
-          alert: false
+          alert: false,
 
      }),
      computed: {

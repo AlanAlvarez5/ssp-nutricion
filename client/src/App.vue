@@ -1,10 +1,9 @@
 <template>
-  <v-app>
+  <v-app >
     <Header v-if="estaActivo"></Header>
     <v-main>
-      <v-container>
-        <router-view></router-view>
-      </v-container>
+        <router-view v-if="!estaActivo" style="height:100vh"></router-view>
+        <router-view v-if="estaActivo"></router-view>
     </v-main>
   </v-app>
 </template>
