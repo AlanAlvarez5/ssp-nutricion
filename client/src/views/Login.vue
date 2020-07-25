@@ -14,13 +14,26 @@
                          <v-card-actions>
                               <v-text-field type="password" v-model="password" label="Contraseña" :rules="rules" hide-details="auto"></v-text-field>
                          </v-card-actions>
-                         <v-btn  :disabled="disabled" class="my-3" block small color="primary">Iniciar Sesión</v-btn>
+                         <v-btn @click="login()" :disabled="disabled" class="my-3" block small color="primary">Iniciar Sesión</v-btn>
+
+                         <v-alert
+                              v-model="alert"
+                              dismissible
+                              type="error"
+                         >
+                              {{mensaje}}
+                         </v-alert>
+
                     </v-card>
                </v-col>
           </v-row>
 </template>
 
 <script>
+
+import { mapState, mapMutations, mapActions } from "vuex";
+import router from '../router';
+
 export default {
      name: 'Login',
      data: () => ({
@@ -32,19 +45,43 @@ export default {
                value => !value || /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(value) || 'El correo debe de ser valido'
 
           ],
-          correo: '',
-          password: '',
+          correo: 'usuario@mail.com',
+          password: 'usuario',
+          mensaje: '',
+          alert: false
 
      }),
      computed: {
           disabled: function () {
-               
                if (this.password === '' || this.correo === '' || !(/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(this.correo))){
                     return true
                } else {
                     return false
                }
           }
-     }
+     },
+     methods: {
+          ...mapMutations(['obtenerUsuario']),
+          ...mapActions(['guardarUsuario', 'leerToken', 'cerrarSesion']),
+          login(){
+
+               const body = {
+                    correo: this.correo,
+                    password: this.password
+               }
+
+               this.axios.post('/login', body )
+                    .then( res => {
+                         const token = res.data.token
+                         this.guardarUsuario(token)
+                    })
+                    .catch( err => {
+                         // console.log(err.response.data)
+                         this.mensaje = err.response.data.mensaje
+                         this.alert = true
+                    })
+
+          }
+     },
 }
 </script>

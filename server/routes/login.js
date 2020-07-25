@@ -16,21 +16,20 @@ router.post('/login', async(req, res) => {
         if ( usuario.length > 0 ) {
 
             let payload = {
-                id: usuario[0].nue
+                usuario: usuario[0],
             };
 
             const token = jwt.sign(payload, req.app.get('llave'));
 
             res.json({
                 mensaje: 'Autenticado',
-                usuario: usuario[0],
                 token
             });
             
         } else {
-            res.json({
-                mensaje: 'INVALID_USERNAME_PASSWORD'
-            });
+            return res.status(400).json({
+                mensaje: 'Usuario o contraseña invalidos'
+            })
         }
     } catch (error) {
         return res.status(400).json({

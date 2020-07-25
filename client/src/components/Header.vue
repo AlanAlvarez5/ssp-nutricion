@@ -9,9 +9,10 @@
 
                <v-toolbar-title>SISE Nutricion</v-toolbar-title>
 
+
                <v-spacer></v-spacer>
 
-               <v-btn tex-icon dark color="error">
+               <v-btn @click="cerrarSesion" tex-icon dark color="error">
                     Salir
                     <v-icon class="ml-3">fas fa-sign-out-alt</v-icon>
                </v-btn>
@@ -45,8 +46,12 @@
 </template>
 
 <script>
+import {mapActions} from 'vuex'
 export default {
      name: 'Header',
+     methods: {
+          ...mapActions(['cerrarSesion'])
+     },
 
 }
 </script>

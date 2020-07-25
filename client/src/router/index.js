@@ -1,19 +1,23 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
+
+
+import store from '../store'
 
 Vue.use(VueRouter)
 
-  const routes = [
+const routes = [
   {
     path: '/',
     name: 'Home',
-    component: Home
+    component: () => import(/* webpackChunkName: "about" */ '../views/Home.vue'),
+    meta: {requireAuth: true}
   },
   {
     path: '/about',
     name: 'About',
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue'),
+    meta: {requireAuth: true}
   },
   {
     path: '/login',
@@ -22,10 +26,25 @@ Vue.use(VueRouter)
   }
 ]
 
+
+
 const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes
+})
+
+router.beforeEach((to, from, next) => {
+
+  const rutaProtegida = to.matched.some(record => record.meta.requireAuth)
+
+  if ( rutaProtegida && store.state.token === ''){
+    next({name: 'Login'})
+  } else {
+    next()
+  }
+
+
 })
 
 export default router
