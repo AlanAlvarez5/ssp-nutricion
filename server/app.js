@@ -23,10 +23,14 @@ app.use(express.static(path.join(__dirname, 'public/')));
 //     res.send('Hola');
 // });
 
+// Configuramos el puerto por defecto
 app.set('puerto', process.env.PORT || 3000);
+
+// Guardamos la llave para el JWT
 app.set('llave', config.llave);
 
-app.use('/api', require('./routes/index'));
+// Routes
+app.use('/api', require('./routes/login'));
 
 app.use(history());
 
