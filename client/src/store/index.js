@@ -11,7 +11,7 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     token: '',
-    usuario: ''
+    usuario: '',
   },
   mutations: {
     obtenerUsuario(state, payload){

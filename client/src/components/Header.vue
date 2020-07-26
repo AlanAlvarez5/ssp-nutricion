@@ -4,53 +4,70 @@
                color="primary"
                dense
                dark
+               app
           >
-               <!-- <v-app-bar-nav-icon></v-app-bar-nav-icon> -->
+               <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
 
-               <v-toolbar-title>SISE Nutricion</v-toolbar-title>
+               <v-toolbar-title>SISE Nutrición</v-toolbar-title>
 
-
-               <v-spacer></v-spacer>
-
-               <v-btn @click="cerrarSesion" tex-icon dark color="error">
-                    Salir
-                    <v-icon class="ml-3">fas fa-sign-out-alt</v-icon>
-               </v-btn>
-
-               <!-- <v-menu
-               left
-               bottom
-               >
-               <template v-slot:activator="{ on, attrs }">
-               <v-btn
-                    icon
-                    v-bind="attrs"
-                    v-on="on"
-               >
-                    <v-icon>mdi-dots-vertical</v-icon>
-               </v-btn>
-               </template>
-
-               <v-list>
-               <v-list-item
-                    v-for="n in 5"
-                    :key="n"
-                    @click="() => {}"
-               >
-                    <v-list-item-title>Option {{ n }}</v-list-item-title>
-               </v-list-item>
-               </v-list>
-               </v-menu> -->
           </v-app-bar>
+
+          <v-navigation-drawer  dark color="primary" v-model="drawer" app>
+               <v-row>
+                    <v-col align="center">
+                              <h3 class="mb-3 white--text">
+                                   Bienvenido {{usuario.usuario.nombres}}
+                              </h3>
+                              <v-divider class="mx-5"></v-divider>
+                    </v-col>
+               </v-row>
+               <v-list shaped>
+                    <v-list-item v-for="(item, index) in items" :key="index" :to="item.to">
+                         <v-list-item-action>
+                              <v-icon class="ml-3">{{item.icon}}</v-icon>
+                         </v-list-item-action>
+                         <v-list-item-content>
+                              <v-list-item-title class="ml-3 white--text">{{item.title}}</v-list-item-title>
+                         </v-list-item-content>
+                    </v-list-item>
+                    <v-list-item @click="cerrarSesion" class="error" style="margin-top:20rem">
+                         <v-list-item-action>
+                              <v-icon class="ml-3">fas fa-sign-out-alt</v-icon>
+                         </v-list-item-action>
+                         <v-list-item-content>
+                              <v-list-item-title class="ml-3 white--text">Salir</v-list-item-title>
+                         </v-list-item-content>
+                    </v-list-item>
+
+               </v-list>
+               
+               
+               
+          </v-navigation-drawer>
+
+
      </div>
 </template>
 
 <script>
-import {mapActions} from 'vuex'
+import {mapActions, mapState} from 'vuex'
 export default {
      name: 'Header',
      methods: {
           ...mapActions(['cerrarSesion'])
+     },
+     data() {
+          return {
+               drawer: 'true',
+               items: [
+                    { title: 'Home', icon: 'fas fa-home', to: {name: 'Home'}},
+                    { title: 'Pacientes', icon: 'fas fa-hospital-user', to: {name: 'Pacientes'}}
+                    // { title: 'Pacients', icon: 'fas fa-hospital-user'},
+               ],
+          }
+     },
+     computed: {
+          ...mapState(['usuario'])
      },
 
 }

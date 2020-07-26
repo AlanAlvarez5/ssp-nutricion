@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken")
 
-const isAuth = (req, res, next) => {
+let isAuth = (req, res, next) => {
 
      // Recibir el token que mandamos de los headers
      let token = req.get('token')
@@ -16,7 +16,8 @@ const isAuth = (req, res, next) => {
           }
 
           // Creamos una nueva propiedad en el req
-          req.id = decoded.id
+          req.nue = decoded.usuario.nue
+          // console.log(decoded.usuario.nue)
           next()
      })
 

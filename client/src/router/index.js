@@ -8,7 +8,7 @@ Vue.use(VueRouter)
 
 const routes = [
   {
-    path: '/',
+    path: '/home',
     name: 'Home',
     component: () => import(/* webpackChunkName: "about" */ '../views/Home.vue'),
     meta: {requireAuth: true}
@@ -17,6 +17,12 @@ const routes = [
     path: '/about',
     name: 'About',
     component: () => import(/* webpackChunkName: "about" */ '../views/About.vue'),
+    meta: {requireAuth: true}
+  },
+  {
+    path: '/pacientes',
+    name: 'Pacientes',
+    component: () => import(/* webpackChunkName: "about" */ '../views/Pacientes.vue'),
     meta: {requireAuth: true}
   },
   {

@@ -27,7 +27,7 @@ router.post('/login', async(req, res) => {
             });
             
         } else {
-            return res.status(400).json({
+            return res.status(401).json({
                 mensaje: 'Usuario o contraseña invalidos'
             })
         }
