@@ -76,7 +76,7 @@ export default {
                     password: this.password
                }
 
-               this.axios.post('/login', body )
+               this.axios.post('http://localhost:3000/api/login', body )
                     .then( res => {
                          const token = res.data.token
                          this.guardarUsuario(token)

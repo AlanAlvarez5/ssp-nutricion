@@ -21,7 +21,7 @@
                               <v-divider class="mx-5"></v-divider>
                     </v-col>
                </v-row>
-               <v-list shaped>
+               <v-list >
                     <v-list-item v-for="(item, index) in items" :key="index" :to="item.to">
                          <v-list-item-action>
                               <v-icon class="ml-3">{{item.icon}}</v-icon>
