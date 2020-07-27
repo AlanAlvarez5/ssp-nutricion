@@ -27,6 +27,7 @@
                     :search="search"
                     :loading="loading" 
                     loading-text="Cargando datos..."
+                    @click:row="perfilAlumno"
                >
                     <template v-slot:item.estado_nutri="{ item }">
                          <v-chip :color="item.estado_nutri === 'Activo'? 'green': 'red'" dark>{{ item.estado_nutri }}</v-chip>
@@ -553,7 +554,6 @@ export default {
                          setTimeout(this.cancel_alert, 5000);
                     })
 
-               // LLamar a cancelar al finalizar
           },
           cancelar(){
                this.paciente = {
@@ -599,6 +599,10 @@ export default {
           },
           cancel_alert(){
                this.alert = false
+          },
+          perfilAlumno(value){
+               // console.log(value.nua)
+               this.$router.push(`/pacientes/${value.nua}`)
           }
      },
      watch: {
@@ -634,7 +638,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 #nav a {
   font-weight: bold;
 }

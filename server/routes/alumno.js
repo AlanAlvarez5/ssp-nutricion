@@ -19,6 +19,22 @@ router.get('/', isAuth, async (req, res) => {
      }
 })
 
+router.get('/:nua', isAuth, async (req, res) => {
+
+     let nua = req.params.nua
+
+     try {
+          const alumnos = await db.query(`select * from alumno where nua = ${nua}`);
+          res.json(alumnos)
+
+     } catch (error) {
+          return res.status(400).json({
+               mensaje: 'Query Error',
+               error
+           })
+     }
+})
+
 router.post('/nuevo', isAuth, async (req, res) => {
      // console.log(req.body.contacto)
      try {
@@ -112,4 +128,6 @@ router.post('/nuevo', isAuth, async (req, res) => {
      }
 
 })
+
+
 module.exports = router
