@@ -1,6 +1,13 @@
 <template>
      <v-container>
           <h1 class="my-5">Pacientes</h1>
+          <v-alert
+               v-model="alert"
+               dismissible
+               :type="type"
+          >
+               {{mensaje}}
+          </v-alert>
           <v-card>
                <v-card-title>
                     <v-text-field
@@ -16,11 +23,15 @@
                </v-card-title>
                <v-data-table
                     :headers="headers"
-                    :items="alumnos"
+                    :items="pacientes"
                     :search="search"
                     :loading="loading" 
                     loading-text="Cargando datos..."
-               ></v-data-table>
+               >
+                    <template v-slot:item.estado_nutri="{ item }">
+                         <v-chip :color="item.estado_nutri === 'Activo'? 'green': 'red'" dark>{{ item.estado_nutri }}</v-chip>
+                    </template>
+               </v-data-table>
           </v-card>
 
           <!-- Agregar Paciente -->
@@ -48,8 +59,8 @@
                          </v-row>
                          <!-- Informacion personal -->
                          <v-form v-model="info_personal" v-if="nav==1" >
+                              <h2>Información Personal</h2>
                               <v-container >
-                                        
                                         <v-row justify="center" align="center">
                                              <v-col cols="3">
                                                   <v-text-field
@@ -175,6 +186,7 @@
 
                          <!-- Informacón Académica -->
                          <v-form v-model="info_academica" v-if="nav==2">
+                              <h2>Información Académica</h2>
                               <v-container>
                                    <v-row justify="center" align="center">
                                         <v-col cols="9">
@@ -182,6 +194,7 @@
                                                   v-model="paciente.nua"
                                                   :rules="rules.number"
                                                   label="NUA"
+                                                  required
                                                   type="number"
                                              ></v-text-field>
                                         </v-col>
@@ -192,6 +205,7 @@
                                                   v-model="paciente.nombre_division"
                                                   :rules="rules.required"
                                                   label="División"
+                                                  disabled
                                              ></v-text-field>
                                         </v-col>
                                         <v-col cols="3">
@@ -207,13 +221,14 @@
                                                   v-model="periodo"
                                                   :rules="rules.required"
                                                   label="Periodo"
+                                                  disabled
                                              ></v-text-field>
                                         </v-col>
                                    </v-row>
                                    <v-row justify="center" align="center">
                                         <v-col cols="3">
                                                   <v-menu
-                                                  v-model="nacimiento"
+                                                  v-model="ingreso"
                                                   :close-on-content-click="false"
                                                   transition="scale-transition"
                                                   offset-y
@@ -234,27 +249,27 @@
                                                        v-model="paciente.fecha_ingreso"
                                                        :max="new Date().toISOString().substr(0, 10)"
                                                        min="1950-01-01"
-                                                       
                                                   ></v-date-picker>
                                                   </v-menu>
                                              </v-col>
                                              <v-col cols="6">
                                                   <v-text-field
                                                        v-model="paciente.correo"
-                                                       :rules="rules.required"
+                                                       :rules="rules.mail"
                                                        label="Correo Institucional"
                                                   ></v-text-field>
                                              </v-col>
                                    </v-row>
                                    <v-row justify="center" align="center">
-                                        <v-col cols="6">
+                                        <v-col cols="3">
                                              <v-text-field
                                                        v-model="paciente.descubrimiento"
                                                        :rules="rules.required"
+                                                       required
                                                        label="¿Cómo descubrió esto?"
                                              ></v-text-field>
                                         </v-col>
-                                        <v-col cols="3">
+                                        <v-col cols="6">
                                              <v-text-field
                                                        v-model="paciente.disponibilidad"
                                                        :rules="rules.required"
@@ -267,6 +282,7 @@
 
                          <!-- Información Contacto -->
                          <v-form v-model="info_contacto" v-if="nav==3">
+                              <h2>Contacto de Emergencia</h2>
                               <v-row justify="center" align="center">
                                    <v-col cols="3">
                                         <v-text-field
@@ -298,7 +314,7 @@
                                    <v-col cols="6">
                                         <v-text-field
                                              v-model="contacto.correo"
-                                             :rules="rules.required"
+                                             :rules="rules.mail"
                                              label="Correo electrónico"
                                              required
                                         ></v-text-field>
@@ -364,6 +380,8 @@
                          <v-btn color="primary" text @click="agregarPaciente"
                          :disabled="!(info_academica && info_contacto && info_personal)"
                          >
+                         <!-- <v-btn color="primary" text @click="agregarPaciente"
+                         > -->
                          Agregar
                          </v-btn>
                     </v-card-actions>
@@ -376,19 +394,55 @@
 import { mapState } from 'vuex'
 export default {
      name: 'Pacientes',
+     created() {
+          this.loading = true
+
+          let config = {
+               headers: {
+                    token: this.token
+               }
+          }
+               
+          this.axios.get('http://localhost:3000/api/alumno', config)
+               .then(res => {
+                    // console.log(res.data)
+                    this.pacientes = res.data;
+                    
+               })
+               .catch(e => {
+                    this.mensaje = `Error de conexión. Regargar sitio.`
+                    this.alert = true
+                    this.type = 'error'
+                    // setTimeout(this.cancel_alert, 10000);
+               })
+
+          this.axios.get('https://api-sepomex.hckdrk.mx/query/get_estados')
+               .then(res => {
+                    this.estados = res.data.response.estado
+               })
+               .catch(e => {
+                         this.mensaje = `Error de conexión a internet.`
+                         this.alert = true
+                         this.type = 'warning'
+                         // setTimeout(this.cancel_alert, 10000);
+               })
+
+          this.loading = false
+
+     },
      data() {
           return {
                // Tabla de pacientes
                search: '',
                headers: [
-                    { text: 'NUA', align: 'center', sortable: false, value: 'nua',},
+                    { text: 'NUA', align: 'start', sortable: false, value: 'nua',},
                     { text: 'Nombres', align: 'center', sortable: true, value: 'nombres',},
                     { text: 'Apellido Paterno', align: 'center', sortable: true, value: 'apellido_p',},
                     { text: 'Apellido Materno', align: 'center', sortable: true, value: 'apellido_m',},
                     { text: 'Programa Educativo', align: 'center', sortable: true, value: 'programa_educativo',},
-                    { text: 'Estado', align: 'center', sortable: false, value: 'estado_nutri',},
+                    { text: 'Estado', align: 'center', sortable: true, value: 'estado_nutri',},
                ],
-               alumnos: [],
+               pacientes: [],
                loading: false,
 
                // Agregar Paciente
@@ -440,43 +494,19 @@ export default {
                },
                rules:{
                     required: [ v => !!v || 'Requerido', ],
-                    number: [ v => !!v || 'Requerido',  v => Number(v) > 0 || 'Ingresa una número valido']
+                    number: [ v => !!v || 'Requerido',  v => Number(v) > 0 || 'Ingresa una número valido'],
+
+                    mail: [ v  => !!v || 'Requerido', v => !v || /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) || 'El correo debe de ser valido']
                },
                nacimiento: false,
+               ingreso: false,
                municipios_disable: true,
                contacto_municipios_disable: true,
+               alert: false,
+               mensaje: '',
+               type: 'success'
 
           }
-     },
-     created() {
-          this.loading = true
-
-          let config = {
-               headers: {
-                    token: this.token
-               }
-          }
-               
-          this.axios.get('http://localhost:3000/api/alumno', config)
-               .then(res => {
-                    // console.log(res.data)
-                    this.alumnos = res.data;
-                    
-               })
-               .catch(e => {
-                    console.log(e.response);
-               })
-
-          this.axios.get('https://api-sepomex.hckdrk.mx/query/get_estados')
-               .then(res => {
-                    this.estados = res.data.response.estado
-               })
-               .catch(e => {
-                    console.log(e.response);
-               })
-
-          this.loading = false
-
      },
      computed: {
           ...mapState(['token']),
@@ -490,11 +520,38 @@ export default {
      },
      methods: {
           agregarPaciente(){
+               let config = {
+               headers: {
+                    token: this.token
+                    }
+               }
                // Agregar Estado de nacimiento y periodo, contacto_estado
                this.paciente.estado_nacimiento = this.estado
                this.paciente.periodo = this.periodo
                this.contacto.estado = this.contacto_estado
                this.nuevoPaciente = false
+
+
+               const body = {
+                    alumno: this.paciente,
+                    contacto: this.contacto
+               }
+               this.axios.post('http://localhost:3000/api/alumno/nuevo', body, config)
+                    .then(res => {
+                         
+                         this.pacientes.push(res.data.paciente)
+                         this.mensaje = `Paciente ${res.data.paciente.nombres} agregado correctamente.`
+                         this.alert = true
+                         this.type = 'success'
+                         setTimeout(this.cancel_alert, 3000);
+                         this.cancelar()
+                    })
+                    .catch(e => {
+                         this.mensaje = `Imposible agregar al paciente. Volver a intentar`
+                         this.alert = true
+                         this.type = 'error'
+                         setTimeout(this.cancel_alert, 5000);
+                    })
 
                // LLamar a cancelar al finalizar
           },
@@ -539,6 +596,9 @@ export default {
                this.estado = '',
                this.contacto_estado = ''
                this.nuevoPaciente = false
+          },
+          cancel_alert(){
+               this.alert = false
           }
      },
      watch: {
@@ -547,7 +607,7 @@ export default {
                     this.axios.get(`https://api-sepomex.hckdrk.mx/query/get_municipio_por_estado/${val}`)
                     .then(res => {
                          // this.municipios = res.data.response.estado
-                         this.municipios = res.data.response.municipios
+                         this.municipios = res.data.response.municipios.sort()
                          this.municipios_disable = false
 
                     })
@@ -561,7 +621,7 @@ export default {
                     this.axios.get(`https://api-sepomex.hckdrk.mx/query/get_municipio_por_estado/${val}`)
                     .then(res => {
                          // this.municipios = res.data.response.estado
-                         this.contacto_municipios = res.data.response.municipios
+                         this.contacto_municipios = res.data.response.municipios.sort()
                          this.contacto_municipios_disable = false
 
                     })
@@ -575,7 +635,6 @@ export default {
 </script>
 
 <style>
-
 #nav a {
   font-weight: bold;
 }

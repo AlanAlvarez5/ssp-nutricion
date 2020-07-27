@@ -27,7 +27,7 @@ create table if not exists contacto(
 )engine = innodb;
 
 create table if not exists alumno(
-	nua varchar(06) not null,
+	nua varchar(10) not null,
     contacto_id int not null,
     nombres varchar(30) not null,
 	apellido_p varchar(30) not null,
@@ -48,8 +48,8 @@ create table if not exists alumno(
     descubrimiento varchar(50),
     disponibilidad varchar(200),
     estado_nutri varchar(30) not null,
-    fecha_cierre varchar(30) not null,
-    causas_cierre varchar(30) not null,
+    fecha_cierre date,
+    causas_cierre varchar(30),
 
     primary key(nua),
 
