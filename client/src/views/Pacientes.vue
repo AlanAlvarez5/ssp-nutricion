@@ -30,7 +30,7 @@
                     @click:row="perfilAlumno"
                >
                     <template v-slot:item.estado_nutri="{ item }">
-                         <v-chip :color="item.estado_nutri === 'Activo'? 'green': 'red'" dark>{{ item.estado_nutri }}</v-chip>
+                         <v-chip :color="estado_nutri(item.estado_nutri)" dark>{{ item.estado_nutri }}</v-chip>
                     </template>
                </v-data-table>
           </v-card>
@@ -47,11 +47,10 @@
                     <v-card-title class="white--text headline primary lighten-2">
                          Nuevo Paciente
                     </v-card-title>
-                    <v-card-text style="min-height:35rem">
+                    <v-card-text style="min-height:30rem">
                          <v-row >
                               <v-col  justify="center" align="center" cols="12">
                                    <div id="nav">
-
                                         <a @click="nav = 1" :style="info_personal?`color:#4CAF50`:`color:#FF5252`"> Información Personal</a> |
                                         <a @click="nav = 2" :style="info_academica?`color:#4CAF50`:`color:#FF5252`"> Información Académica</a> |
                                         <a @click="nav = 3" :style="info_contacto?`color:#4CAF50`:`color:#FF5252`"> Contacto de Emergencia</a>
@@ -144,7 +143,6 @@
                                                        v-model="paciente.fecha_nacimiento"
                                                        :max="new Date().toISOString().substr(0, 10)"
                                                        min="1950-01-01"
-                                                       
                                                   ></v-date-picker>
                                                   </v-menu>
                                              </v-col>
@@ -603,6 +601,17 @@ export default {
           perfilAlumno(value){
                // console.log(value.nua)
                this.$router.push(`/pacientes/${value.nua}`)
+          },
+          estado_nutri(estado){
+               if (estado == 'Activo'){
+                    return 'green'
+               } else if (estado == 'Alta') {
+                    return 'green'
+               } else if (estado == 'Canalización'){
+                    return 'orange'
+               } else if ( estado == 'Baja'){
+                    return 'red'
+               }
           }
      },
      watch: {

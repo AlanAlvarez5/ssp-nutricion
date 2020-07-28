@@ -64,6 +64,7 @@ create table if not exists consulta(
     nua varchar(06) not null,
     nue varchar(06) not null,
     primary key(fecha, nua, nue),
+    asistencia boolean, 
     constraint fk_consulta_administrador foreign key (nue)
 		references administrador(nue)
         on delete cascade

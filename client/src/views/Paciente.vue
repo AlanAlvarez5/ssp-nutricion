@@ -2,7 +2,7 @@
      <v-container>
           <v-row align="center">
                <h1 class="my-5">Paciente {{ paciente.nombres }}</h1>
-               <h4 class="ml-5" :style="paciente.estado_nutri === 'Activo'? `color:#4CAF50`:`color:#FF5252`">{{paciente.estado_nutri}}</h4>
+               <h4 class="ml-5" :style="estado_nutri(paciente.estado_nutri)">{{paciente.estado_nutri}}</h4>
                <v-spacer></v-spacer>
                <v-btn @click="$router.push('/pacientes/')" dark color="primary">
                          <v-icon class="mr-3">fas fa-arrow-left</v-icon>
@@ -88,6 +88,19 @@ export default {
                }).catch((err) => {
                     console.log(err)     
                });
+     },
+     methods: {
+          estado_nutri(estado){
+               if (estado == 'Activo'){
+                    return `color:#4CAF50`
+               } else if (estado == 'Alta') {
+                    return `color:#4CAF50`
+               } else if (estado == 'Canalización'){
+                    return `color:#FF8000`
+               } else if ( estado == 'Baja'){
+                    return `color:#FF5252`
+               }
+          }
      },
 }
 </script>

@@ -4,13 +4,12 @@ const { isAuth } = require('../middelwares/auth')
 
 const router = express.Router()
 const db = require('../db')
-
+// alumno
 router.get('/', isAuth, async (req, res) => {
 
      try {
           const alumnos = await db.query(`select * from alumno`);
           res.json(alumnos)
-
      } catch (error) {
           return res.status(400).json({
                mensaje: 'Query Error',
@@ -63,7 +62,7 @@ router.post('/nuevo', isAuth, async (req, res) => {
           )
 
           req.body.alumno.contacto_id = NuevoContacto.insertId
-          console.log(req.body.alumno)
+          // console.log(req.body.alumno)
           const NuevoAlumno = await db.query(
                `insert into alumno (
                     nua,

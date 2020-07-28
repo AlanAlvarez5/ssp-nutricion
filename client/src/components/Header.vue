@@ -61,7 +61,7 @@ export default {
                drawer: 'true',
                items: [
                     { title: 'Home', icon: 'fas fa-home', to: {name: 'Home'}},
-                    { title: 'Pacientes', icon: 'fas fa-hospital-user', to: {name: 'Pacientes'}}
+                    { title: 'Pacientes', icon: 'fas fa-hospital-user', to: {name: 'Pacientes'}},
                     // { title: 'Pacients', icon: 'fas fa-hospital-user'},
                ],
           }
