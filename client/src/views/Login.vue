@@ -10,21 +10,25 @@
                     class="mx-auto px-5 py-5"
                     max-width="344"
                     >
+                         <v-card-title>
+                              Iniciar Sesión
+                         </v-card-title>
+
                          <v-card-text>
-                              <h1>Iniciar Sesión</h1>
+                              <v-form v-model="login_form" >
+                                   <v-text-field v-model="correo" label="Correo Insitucional" :rules="this.rules.mail" hide-details="auto"></v-text-field>
+                                   <v-text-field type="password" v-model="password" label="Contraseña" :rules="this.rules.required" hide-details="auto"></v-text-field>
+                              </v-form>
                          </v-card-text>
+
                          <v-card-actions>
-                              <v-text-field v-model="correo" label="Correo Insitucional" :rules="emailRules" hide-details="auto"></v-text-field>
+                              <v-btn @click="login()" :disabled="!login_form" class="my-3" block small color="primary">Iniciar Sesión</v-btn>
                          </v-card-actions>
-                         <v-card-actions>
-                              <v-text-field type="password" v-model="password" label="Contraseña" :rules="rules" hide-details="auto"></v-text-field>
-                         </v-card-actions>
-                         <v-btn @click="login()" :disabled="disabled" class="my-3" block small color="primary">Iniciar Sesión</v-btn>
 
                          <v-alert
                               v-model="alert"
                               dismissible
-                              type="error"
+                              type="warning"
                          >
                               {{mensaje}}
                          </v-alert>
@@ -43,14 +47,7 @@ import router from '../router';
 export default {
      name: 'Login',
      data: () => ({
-          rules: [
-               value => !!value || 'Requerido',                                                                
-          ],
-          emailRules: [ 
-               value => !!value || 'Requerido',
-               value => !value || /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(value) || 'El correo debe de ser valido'
-
-          ],
+          login_form: false,
           correo: 'usuario@mail.com',
           password: 'usuario',
           mensaje: '',
@@ -64,7 +61,8 @@ export default {
                } else {
                     return false
                }
-          }
+          },
+          ...mapState(['rules'])
      },
      methods: {
           ...mapMutations(['obtenerUsuario']),
@@ -82,7 +80,6 @@ export default {
                          this.guardarUsuario(token)
                     })
                     .catch( err => {
-                         // console.log(err.response.data)
                          this.mensaje = err.response.data.mensaje
                          this.alert = true
                     })

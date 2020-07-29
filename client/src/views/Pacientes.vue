@@ -1,6 +1,6 @@
 <template>
      <v-container>
-          <h1 class="my-5">Pacientes</h1>
+          <h1 >Pacientes</h1>
           <v-alert
                v-model="alert"
                dismissible
@@ -22,7 +22,7 @@
                     </v-btn>
                </v-card-title>
                <v-data-table
-                    :headers="headers"
+                    :headers="headers_table"
                     :items="pacientes"
                     :search="search"
                     :loading="loading" 
@@ -101,7 +101,7 @@
                                              <v-col cols="3">
                                                   <v-text-field
                                                   v-model="paciente.edad"
-                                                  :rules="rules.number"
+                                                  :rules="rules.edad"
                                                   label="Edad"
                                                   type="number"
                                                   min="1"
@@ -395,14 +395,8 @@ export default {
      name: 'Pacientes',
      created() {
           this.loading = true
-
-          let config = {
-               headers: {
-                    token: this.token
-               }
-          }
                
-          this.axios.get('http://localhost:3000/api/alumno', config)
+          this.axios.get('http://localhost:3000/api/alumno', this.config)
                .then(res => {
                     // console.log(res.data)
                     this.pacientes = res.data;
@@ -433,7 +427,7 @@ export default {
           return {
                // Tabla de pacientes
                search: '',
-               headers: [
+               headers_table: [
                     { text: 'NUA', align: 'start', sortable: false, value: 'nua',},
                     { text: 'Nombres', align: 'center', sortable: true, value: 'nombres',},
                     { text: 'Apellido Paterno', align: 'center', sortable: true, value: 'apellido_p',},
@@ -491,12 +485,6 @@ export default {
                     ciudad    : '',
                     estado    : ''
                },
-               rules:{
-                    required: [ v => !!v || 'Requerido', ],
-                    number: [ v => !!v || 'Requerido',  v => Number(v) > 0 || 'Ingresa una número valido'],
-
-                    mail: [ v  => !!v || 'Requerido', v => !v || /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) || 'El correo debe de ser valido']
-               },
                nacimiento: false,
                ingreso: false,
                municipios_disable: true,
@@ -508,7 +496,7 @@ export default {
           }
      },
      computed: {
-          ...mapState(['token']),
+          ...mapState(['token', 'rules', 'config']),
           periodo: function (){
                if(Number(new Date().toISOString().substr(5, 2)) <= 7){
                     return 'Ene-Jun '+ new Date().toISOString().substr(0, 4)
@@ -519,11 +507,6 @@ export default {
      },
      methods: {
           agregarPaciente(){
-               let config = {
-               headers: {
-                    token: this.token
-                    }
-               }
                // Agregar Estado de nacimiento y periodo, contacto_estado
                this.paciente.estado_nacimiento = this.estado
                this.paciente.periodo = this.periodo
@@ -535,7 +518,7 @@ export default {
                     alumno: this.paciente,
                     contacto: this.contacto
                }
-               this.axios.post('http://localhost:3000/api/alumno/nuevo', body, config)
+               this.axios.post('http://localhost:3000/api/alumno/nuevo', body, this.config)
                     .then(res => {
                          
                          this.pacientes.push(res.data.paciente)
@@ -617,7 +600,7 @@ export default {
      watch: {
           estado: function(val){
                if(val !== ''){
-                    this.axios.get(`https://api-sepomex.hckdrk.mx/query/get_municipio_por_estado/${val}`)
+                    this.axios.get(`https://api-sepomex.hckdrk.mx/query/get_municipio_por_estado/${val}/`)
                     .then(res => {
                          // this.municipios = res.data.response.estado
                          this.municipios = res.data.response.municipios.sort()
@@ -631,7 +614,7 @@ export default {
           },
           contacto_estado: function(val){
                if(val !== ''){
-                    this.axios.get(`https://api-sepomex.hckdrk.mx/query/get_municipio_por_estado/${val}`)
+                    this.axios.get(`https://api-sepomex.hckdrk.mx/query/get_municipio_por_estado/${val}/`)
                     .then(res => {
                          // this.municipios = res.data.response.estado
                          this.contacto_municipios = res.data.response.municipios.sort()

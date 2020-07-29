@@ -38,37 +38,33 @@
                               <v-list-item-title class="ml-3 white--text">Salir</v-list-item-title>
                          </v-list-item-content>
                     </v-list-item>
-
                </v-list>
-               
-               
-               
           </v-navigation-drawer>
-
-
      </div>
 </template>
 
 <script>
-import {mapActions, mapState} from 'vuex'
-export default {
-     name: 'Header',
-     methods: {
-          ...mapActions(['cerrarSesion'])
-     },
-     data() {
-          return {
-               drawer: 'true',
-               items: [
-                    { title: 'Home', icon: 'fas fa-home', to: {name: 'Home'}},
-                    { title: 'Pacientes', icon: 'fas fa-hospital-user', to: {name: 'Pacientes'}},
-                    // { title: 'Pacients', icon: 'fas fa-hospital-user'},
-               ],
-          }
-     },
-     computed: {
-          ...mapState(['usuario'])
-     },
 
-}
+     import {mapActions, mapState} from 'vuex'
+
+     export default {
+          name: 'Header',
+          methods: {
+               ...mapActions(['cerrarSesion'])
+          },
+          data() {
+               return {
+                    drawer: 'true',
+                    items: [
+                         { title: 'Home', icon: 'fas fa-home', to: {name: 'Home'}},
+                         { title: 'Pacientes', icon: 'fas fa-hospital-user', to: {name: 'Pacientes'}},
+                         { title: 'Consultas', icon: 'fas fa-calendar-day', to: {name: 'Consultas'}},
+                    ],
+               }
+          },
+          computed: {
+               ...mapState(['usuario'])
+          },
+
+     }
 </script>

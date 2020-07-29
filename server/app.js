@@ -32,6 +32,7 @@ app.set('llave', config.llave);
 // Routes
 app.use('/api', require('./routes/login'));
 app.use('/api/alumno', require('./routes/alumno'));
+app.use('/api/consulta', require('./routes/consulta'));
 
 app.use(history());
 

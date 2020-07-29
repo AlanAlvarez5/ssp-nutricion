@@ -32,6 +32,12 @@ const routes = [
     meta: {requireAuth: true}
   },
   {
+    path: '/consultas',
+    name: 'Consultas',
+    component: () => import(/* webpackChunkName: "about" */ '../views/Consultas.vue'),
+    meta: {requireAuth: true}
+  },
+  {
     path: '/login',
     name: 'Login',
     component: () => import(/* webpackChunkName: "about" */ '../views/Login.vue')

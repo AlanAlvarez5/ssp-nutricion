@@ -6,8 +6,9 @@
                <v-spacer></v-spacer>
                <v-btn @click="$router.push('/pacientes/')" dark color="primary">
                          <v-icon class="mr-3">fas fa-arrow-left</v-icon>
-                         Regresar
+                         Pacientes
                </v-btn>
+               <NuevaConsulta :nua="paciente.nua"></NuevaConsulta>
                <a :href="`mailto:${paciente.correo}`" class="ml-3" :style="'text-decoration: none'">
                <v-btn dark color="blue">
                          <v-icon class="mr-3">fas fa-envelope</v-icon>
@@ -48,8 +49,12 @@
 
 <script>
 import { mapState } from 'vuex';
+import NuevaConsulta from '../components/NuevaConsulta'
 export default {
      name: 'Paciente',
+     components: {
+          NuevaConsulta
+     },
      data() {
           return {
                paciente: {},
@@ -58,15 +63,11 @@ export default {
           }
      },
      computed: {
-          ...mapState(['token']),
+          ...mapState(['token', 'config']),
      },
      created() {
-          let config = {
-               headers: {
-                    token: this.token
-                    }
-          }
-          this.axios.get(`http://localhost:3000/api/alumno/${this.$route.params.nua}`, config)
+
+          this.axios.get(`http://localhost:3000/api/alumno/${this.$route.params.nua}`, this.config)
                .then((result) => {
                     this.paciente = result.data[0]
                     this.pacienteInfo = [

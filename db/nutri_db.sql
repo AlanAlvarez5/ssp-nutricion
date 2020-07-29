@@ -60,10 +60,12 @@ create table if not exists alumno(
 )engine = innodb;
 
 create table if not exists consulta(
-	fecha datetime not null,
+	fecha date not null,
+    hora_i time not null,
+    hora_f time not null,
     nua varchar(06) not null,
     nue varchar(06) not null,
-    primary key(fecha, nua, nue),
+    primary key(fecha, nua, nue, hora_i, hora_f),
     asistencia boolean, 
     constraint fk_consulta_administrador foreign key (nue)
 		references administrador(nue)
