@@ -196,7 +196,7 @@ export default {
                // console.log(start)
                const date = new Date
                date.toUTCString()
-               date.setUTCHours(-6)
+               // date.setUTCHours(-6)
                date.toISOString()
                const start2 = { date: date.toISOString().substr(0,10)}
 
