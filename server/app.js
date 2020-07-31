@@ -33,6 +33,7 @@ app.set('llave', config.llave);
 app.use('/api', require('./routes/login'));
 app.use('/api/alumno', require('./routes/alumno'));
 app.use('/api/consulta', require('./routes/consulta'));
+app.use('/api/riesgoNutricio', require('./routes/riesgoNutricio'));
 
 app.use(history());
 
