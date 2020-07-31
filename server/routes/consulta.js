@@ -4,7 +4,7 @@ const { isAuth } = require('../middelwares/auth')
 
 const router = express.Router()
 const db = require('../db')
-// alumno
+
 router.post('/consultas-rango', isAuth, async (req, res) => {
 
      let start = req.body.start.date
@@ -14,9 +14,24 @@ router.post('/consultas-rango', isAuth, async (req, res) => {
           // console.log('Hola')
           // const consultas = await db.query(`select * from consulta where fecha >= '${start}' and fecha <= '${end}' `);
           const consultas = await db.query(
-               `select c.fecha, c.hora_i, c.hora_f, c.nua, c.nue, c.asistencia,
-                         a.nombres as paciente, admin.nombres as admin from consulta c, alumno a, administrador admin where c.fecha >= '${start}' and c.fecha <= '${end}' `)
-          
+               `select 
+                    c.fecha, 
+                    c.hora_i, 
+                    c.hora_f, 
+                    c.nua,
+                    c.nue, 
+                    c.asistencia,
+                    a.nombres as paciente, 
+                    admin.nombres as admin 
+               from 
+                    consulta c,
+                    alumno a, 
+                    administrador admin 
+               where 
+                    c.fecha >= '${start}' 
+                         and 
+                    c.fecha <= '${end}' 
+               `)
           // console.log(full)
           res.json(consultas)
      } catch (error) {
@@ -112,7 +127,7 @@ router.put('/editar', isAuth, async (req, res) => {
 
           // console.log('Hola')
      } catch (error) {
-          // console.log(error)
+          console.log(error)
           return res.status(400).json({
                mensaje: 'Query Error',
                error
