@@ -31,6 +31,10 @@ router.post('/consultas-rango', isAuth, async (req, res) => {
                     c.fecha >= '${start}' 
                          and 
                     c.fecha <= '${end}' 
+                         and
+                    a.nua = c.nua
+                         and
+                    admin.nue = c.nue
                `)
           // console.log(full)
           res.json(consultas)
@@ -126,6 +130,63 @@ router.put('/editar', isAuth, async (req, res) => {
           // console.log(consultas)
 
           // console.log('Hola')
+     } catch (error) {
+          console.log(error)
+          return res.status(400).json({
+               mensaje: 'Query Error',
+               error
+           })
+     }
+})
+
+router.post('/delete', isAuth, async (req, res) => {
+
+     let body = req.body
+     console.log(body)
+
+     try {
+          const consulta = await db.query(
+               `delete from consulta 
+               where
+                    fecha = '${body.fecha}' 
+                    and hora_i = '${body.hora_i}'
+                    and nua = '${body.nua}'
+               `   
+          )
+
+          res.json({mensaje: 'OK'})
+
+     } catch (error) {
+          console.log(error)
+          return res.status(400).json({
+               mensaje: 'Query Error',
+               error
+           })
+     }
+})
+
+router.put('/reagendar', isAuth, async ( req, res) => {
+
+     let body = req.body
+
+     try {
+          const consulta = await db.query(
+               `update consulta 
+               set
+                    fecha = '${body.fecha}', 
+                    hora_i = '${body.hora_i}',
+                    hora_f = '${body.hora_f}'
+               where
+                    fecha = '${body.fecha_old}'
+                    and
+                    hora_i = '${body.hora_old}'
+                    and
+                    nua = '${body.nua}'
+               `   
+          )
+
+          res.json({mensaje: 'OK'})
+
      } catch (error) {
           console.log(error)
           return res.status(400).json({

@@ -34,6 +34,8 @@ create table if not exists alumno(
     apellido_m varchar(30),
     genero varchar(30) not null,
     edad int not null,
+    faltas int not null default 0,
+    faltas_jus int not null default 0,
     estado_civil varchar(30) not null,
     fecha_nacimiento date not null,
     ciudad_nacimiento varchar(30) not null,
@@ -66,7 +68,8 @@ create table if not exists consulta(
     nua varchar(06) not null,
     nue varchar(06) not null,
     primary key(fecha, nua, nue, hora_i, hora_f),
-    asistencia boolean, 
+    asistencia int default 0,
+    justificada int default 0,  
     constraint fk_consulta_administrador foreign key (nue)
 		references administrador(nue)
         on delete cascade

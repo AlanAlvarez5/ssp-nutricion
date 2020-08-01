@@ -1,7 +1,7 @@
 <template>
      <div>
           <v-btn class="ml-3" @click="openDialog = true" dark color="purple">
-               <v-icon class="mr-3">fas fa-plus-circle</v-icon>
+               <v-icon class="mr-3">fas fa-calendar-plus</v-icon>
                Nueva<br>Consulta
           </v-btn>
           <v-dialog
@@ -231,8 +231,8 @@
                                    setTimeout(() => {
                                         
                                         this.cancelar()
-                                        // this.$router.push({name: 'Consultas'})
-                                        this.$router.go()
+                                        this.$router.push({name: 'Consultas'})
+                                        // this.$router.go()
                                    }, 1500)
                               }
                          })

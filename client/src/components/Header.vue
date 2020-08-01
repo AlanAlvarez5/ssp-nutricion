@@ -22,9 +22,9 @@
                     </v-col>
                </v-row>
                <v-list >
-                    <v-list-item v-for="(item, index) in items" :key="index" :to="item.to">
+                    <v-list-item v-for="(item, index) in items" @click="drawer = !drawer" :key="index" :to="item.to">
                          <v-list-item-action>
-                              <v-icon class="ml-3">{{item.icon}}</v-icon>
+                              <v-icon class="ml-3" >{{item.icon}}</v-icon>
                          </v-list-item-action>
                          <v-list-item-content>
                               <v-list-item-title class="ml-3 white--text">{{item.title}}</v-list-item-title>
