@@ -207,7 +207,7 @@
                     this.alert = false
                     this.openDialog = false
                },
-               async agregar(){
+               agregar(){
 
                     const body = {
                          fecha: this.date,
@@ -231,8 +231,8 @@
                                    setTimeout(() => {
                                         
                                         this.cancelar()
-                                        this.$router.push({name: 'Consultas'})
-                                        // this.$router.go()
+                                        // this.$router.push({name: 'Consultas'})
+                                        this.$router.go()
                                    }, 1500)
                               }
                          })

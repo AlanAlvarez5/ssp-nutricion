@@ -2,7 +2,6 @@
      <div>
           <v-row class="fill-height">
                <v-col>
-                    
                     <v-sheet height="64" v-if="!dashboard">
                          <v-toolbar flat color="white">
                          
@@ -19,7 +18,10 @@
                               {{ $refs.calendar.title }}
                               </v-toolbar-title>
                               <v-spacer></v-spacer>
-                              <NuevaConsulta class="mr-3"></NuevaConsulta>
+                              <v-btn class="mr-3" @click="cita.agregar = true; cita.editar = true" dark color="purple">
+                                   <v-icon class="mr-3">fas fa-calendar-plus</v-icon>
+                                   Nueva<br>Consulta
+                              </v-btn>
                               <v-menu bottom right>
                               <template v-slot:activator="{ on, attrs }">
                               <v-btn
@@ -104,7 +106,7 @@
                                         <v-btn
                                              icon
                                              dark
-                                             @click="editarCita(selectedEvent)"
+                                             @click="editarCitaDialog(selectedEvent)"
                                              v-bind="attrs"
                                              v-on="on"
                                         >
@@ -119,7 +121,7 @@
                                         <v-btn
                                              icon
                                              dark
-                                             @click="cancelarConsulta(selectedEvent)"
+                                             @click="cancelarConsultaDialog(selectedEvent)"
                                              v-bind="attrs"
                                              v-on="on"
                                         >
@@ -143,7 +145,7 @@
 
           <!-- Editar Dialog -->
           <v-dialog
-               v-model="editar_cita.status"
+               v-model="cita.editar"
                persistent
                max-width="80%"
                scrollable
@@ -155,11 +157,11 @@
                     </v-card-title>
 
                     <v-card-text>
-                         <v-form v-model="editar_cita.form">
+                         <v-form v-model="cita.form">
                               <v-row justify="center" align="center">
                                    <v-col cols="6" justify="center" align="center">
                                         <v-date-picker
-                                             v-model="editar_cita.fecha"
+                                             v-model="cita.fecha"
                                              full-width
                                              :landscape="$vuetify.breakpoint.smAndUp"
                                              class="mt-4"
@@ -171,17 +173,25 @@
                                              <v-col cols="4">
 
                                                   <v-text-field
-                                                       v-model="editar_cita.nua"
+                                                       v-model="cita.nua"
                                                        :rules="rules.number"
                                                        label="NUA"
                                                        required
-                                                       disabled
                                                        type="number"
                                                   ></v-text-field>
                                              </v-col>
                                              <v-col cols="4">
                                                   <v-text-field
-                                                       v-model="editar_cita.nue"
+                                                       v-if="cita.editar && cita.agregar"
+                                                       v-model="usuario.usuario.nue"
+                                                       :rules="rules.number"
+                                                       label="NUE"
+                                                       required
+                                                       disabled
+                                                  ></v-text-field>
+                                                  <v-text-field
+                                                       v-if="cita.editar && !cita.agregar"
+                                                       v-model="cita.nue"
                                                        :rules="rules.number"
                                                        label="NUE"
                                                        required
@@ -196,7 +206,7 @@
                                                   v-model="menu_start"
                                                   :close-on-content-click="false"
                                                   :nudge-right="40"
-                                                  :return-value.sync="editar_cita.hora_i"
+                                                  :return-value.sync="cita.hora_i"
                                                   transition="scale-transition"
                                                   offset-y
                                                   max-width="290px"
@@ -204,7 +214,7 @@
                                                   >
                                                        <template v-slot:activator="{ on, attrs }">
                                                             <v-text-field
-                                                            v-model="editar_cita.hora_i"
+                                                            v-model="cita.hora_i"
                                                             label="Inicio"
                                                             prepend-icon="fas fa-clock"
                                                             required
@@ -217,11 +227,11 @@
                                                        </template>
                                                        <v-time-picker
                                                             v-if="menu_start"
-                                                            v-model="editar_cita.hora_i"
+                                                            v-model="cita.hora_i"
                                                             :max="'18:00'"
                                                             :min="'08:00'"
                                                             full-width
-                                                            @click:minute="$refs.menu_start.save(editar_cita.hora_i)"
+                                                            @click:minute="$refs.menu_start.save(cita.hora_i)"
                                                             :allowed-minutes="[30, 0]"
                                                             format="24hr"
                                                        ></v-time-picker>
@@ -233,7 +243,7 @@
                                                   v-model="menu_end"
                                                   :close-on-content-click="false"
                                                   :nudge-right="40"
-                                                  :return-value.sync="editar_cita.hora_f"
+                                                  :return-value.sync="cita.hora_f"
                                                   transition="scale-transition"
                                                   offset-y
                                                   max-width="290px"
@@ -241,7 +251,7 @@
                                                   >
                                                        <template v-slot:activator="{ on, attrs }">
                                                             <v-text-field
-                                                            v-model="editar_cita.hora_f"
+                                                            v-model="cita.hora_f"
                                                             label="Final"
                                                             prepend-icon="fas fa-clock"
                                                             required
@@ -254,11 +264,11 @@
                                                        </template>
                                                        <v-time-picker
                                                             v-if="menu_end"
-                                                            v-model="editar_cita.hora_f"
+                                                            v-model="cita.hora_f"
                                                             :max="'18:00'"
-                                                            :min="start"
+                                                            :min="cita.hora_i"
                                                             full-width
-                                                            @click:minute="$refs.menu_end.save(editar_cita.hora_f)"
+                                                            @click:minute="$refs.menu_end.save(cita.hora_f)"
                                                             :allowed-minutes="[30, 0]"
                                                             format="24hr"
                                                        ></v-time-picker>
@@ -272,11 +282,17 @@
                     <v-divider></v-divider>
                     <v-card-actions>
                          <v-spacer></v-spacer>
-                         <v-btn color="error" text @click="editar_cita.status = false">
+                         <v-btn v-if="cita.editar && !cita.agregar" color="error" text @click="cancelar">
                               Cancelar
                          </v-btn>
-                         <v-btn color="primary" text @click="editarCitaOK()">
+                         <v-btn v-if="cita.editar && cita.agregar" color="error" text @click="cancelar">
+                              Cancelar
+                         </v-btn>
+                         <v-btn v-if="cita.editar && !cita.agregar" color="primary" text @click="editarCita()">
                               Reagendar
+                         </v-btn>
+                         <v-btn v-if="cita.editar && cita.agregar" color="primary" text @click="agregarCita()">
+                              Agregar
                          </v-btn>
                     </v-card-actions>
                 </v-card>
@@ -285,19 +301,19 @@
 
           <!-- Eliminar Dialog -->
           <v-row justify="center">
-               <v-dialog v-model="cancelar_cita.status" persistent max-width="450px">
+               <v-dialog v-model="cita.eliminar" persistent max-width="450px">
                     <v-card>
                     <v-card-title class="white--text headline error lighten-2">
                          <span class="headline">Eliminar consulta</span>
                     </v-card-title>
                     <v-card-text class="pa-5 ">
                          <v-row justify="center" align="center">
-                              Se eliminará la cita del paciente {{cancelar_cita.paciente}} a las {{cancelar_cita.hora}} hrs. el día {{cancelar_cita.fecha}}
+                              Se eliminará la cita del paciente {{cita.paciente}} a las {{cita.hora}} hrs. el día {{cita.fecha}}
                          </v-row>
                     </v-card-text>
                     <v-card-actions>
                          <v-spacer></v-spacer>
-                         <v-btn color="blue darken-1" text @click="cancelar_cita.status = false">Regresar</v-btn>
+                         <v-btn color="blue darken-1" text @click="cita.eliminar = false">Regresar</v-btn>
                          <v-btn color="red darken-1" text @click="eliminarConsulta(selectedEvent)">Confirmar</v-btn>
                     </v-card-actions>
                     </v-card>
@@ -339,14 +355,11 @@ export default {
           selectedOpen: false,
           events: [],
           weekdays: [1,2,3,4,5],
-          cancelar_cita: {
-               status: false,
-               fecha: '',
-               hora: '',
-               paciente: ''
-          },
-          editar_cita: {
-               status: false,
+          cita: {
+               editar: false,
+               eliminar: false,
+               agregar: false,
+               paciente: '',
                form: false,
                fecha: '',
                fecha_old: '',
@@ -358,9 +371,11 @@ export default {
           },
           menu_start: false,
           menu_end: false,
+          calendar_start: '',
+          calendar_end: ''
      }),
      computed: {
-          ...mapState(['token', 'config', 'rules'])
+          ...mapState(['token', 'config', 'rules', 'usuario'])
      },
      mounted () {
           this.$refs.calendar.checkChange()
@@ -401,13 +416,14 @@ export default {
           updateRange ({ start, end }) {
 
                // console.log(start)
+               this.calendar_start = start
+               this.calendar_end = end
                const date = new Date
                date.toUTCString()
                // date.setUTCHours(-6)
                date.toISOString()
-               const start2 = { date: date.toISOString().substr(0,10)}
 
-               this.axios.post('http://localhost:3000/api/consulta/consultas-rango', {start: start2, end}, this.config)
+               this.axios.post('http://localhost:3000/api/consulta/consultas-rango', {start: { date: date.toISOString().substr(0,10)}, end}, this.config)
                     .then(res => {
                          const consultas_data = res.data
 
@@ -440,11 +456,11 @@ export default {
                          console.log(e)
                     })
           },
-          cancelarConsulta(event){
-               this.cancelar_cita.fecha = event.fecha
-               this.cancelar_cita.hora = event.hora
-               this.cancelar_cita.paciente = event.name
-               this.cancelar_cita.status = true
+          cancelarConsultaDialog(event){
+               this.cita.fecha = event.fecha
+               this.cita.hora_i = event.hora
+               this.cita.paciente = event.name
+               this.cita.eliminar = true
           },
           eliminarConsulta(event){
 
@@ -458,33 +474,87 @@ export default {
                     .then(res => {
                          // this.events = []
                          // this.$router.go()
-                         this.$router.push({name: 'Consultas'})
+                         this.updateRange({start : this.calendar_start, end : this.calendar_end})
+                         this.cita.eliminar = false
+                         // this.$router.push({name: 'Consultas'}).catch(() => {})
+                         // vm.$forceUpdate();
                     })
                     .catch(e => {
                          console.log(e)
                     })
           },
-          editarCita(event){
-               this.editar_cita.nua = event.nua
-               this.editar_cita.nue = event.nue
-               this.editar_cita.hora_i = event.hora
-               this.editar_cita.hora_old = event.hora
-               this.editar_cita.hora_f = event.hora_f
-               this.editar_cita.fecha = event.fecha
-               this.editar_cita.fecha_old = event.fecha
-               this.editar_cita.status = true
+          editarCitaDialog(event){
+               this.cita.nua = event.nua
+               this.cita.nue = event.nue
+               this.cita.hora_i = event.hora
+               this.cita.hora_old = event.hora
+               this.cita.hora_f = event.hora_f
+               this.cita.fecha = event.fecha
+               this.cita.fecha_old = event.fecha
+               this.cita.editar = true
           },
-          editarCitaOK(){
-               this.axios.put('http://localhost:3000/api/consulta/reagendar', this.editar_cita, this.config)
+          editarCita(){
+               this.axios.put('http://localhost:3000/api/consulta/reagendar', this.cita, this.config)
                     .then(res => {
-                         // this.events = []
-                         // this.$router.go()
-                         this.$router.push({name: 'Consultas'})
+
+                         this.updateRange({start : this.calendar_start, end : this.calendar_end})
+                         this.cita.editar = false
                     })
                     .catch(e => {
                          console.log(e)
                     })
-          }
+          },
+          cancelar(){
+                    this.cita.fecha = ''
+                    this.cita.hora_i = ''
+                    this.cita.hora_f = ''
+                    this.cita.nua = ''
+                    this.cita.agregar = false
+                    this.cita.editar = false
+                    // this.mensaje = ''
+                    // this.alert = false
+                    // this.openDialog = false
+               },
+          agregarCita(){
+
+               const body = {
+                    fecha: this.cita.fecha,
+                    hora_i: this.cita.hora_i,
+                    hora_f: this.cita.hora_f,
+                    nua: this.cita.nua,
+                    nue: this.usuario.usuario.nue,
+               }
+               this.axios.post('http://localhost:3000/api/consulta/nuevo', body, this.config)
+                    .then(res => {
+                         // console.log('mensaje', res.data.mensaje)
+                         // if (res.data.mensaje == 'Consulta Existente'){
+                         //      this.mensaje = 'Horario no disponible'
+                         //      this.alert = true
+                         //      this.type = 'error'
+
+                         // }else{
+                         //      this.mensaje = 'Consulta agregada'
+                         //      this.alert = true
+                         //      this.type = 'success'
+                         //      setTimeout(() => {
+                                   
+                         //           this.cancelar()
+                         //           // this.$router.push({name: 'Consultas'})
+                         //           this.$router.go()
+                         //      }, 1500)
+                         // }
+                         this.cita.agregar = false
+                         this.cita.editar = false
+                         this.updateRange({start : this.calendar_start, end : this.calendar_end})
+                         this.cancelar()
+                    })
+                    .catch(e => {
+                         // this.mensaje = `Error de conexión. Imposible agregar.`
+                         // this.alert = true
+                         // this.type = 'error'
+                         console.log(e)
+                    })
+          },
      },
 }
 </script>
