@@ -65,6 +65,19 @@
                          </v-row>
                     </v-card>
                </v-col>
+               <v-col cols = "4">
+                    <v-card>
+                         <v-card-title>
+                              Valoraciones de riesgo nutricio
+                         </v-card-title>
+                         <v-data-table 
+                              :headers="headers"
+                              :items="items"
+                         >
+
+                         </v-data-table>
+                    </v-card>
+               </v-col>
           </v-row>
      </v-container>
 </template>
@@ -81,7 +94,11 @@ export default {
           return {
                paciente: {},
                pacienteInfo: [],
-               meses: ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre']
+               meses: ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'],
+               headers: [
+                    {text: 'Periodo', align: 'center', sortable: false, value: 'periodo'}
+               ],
+               items: []
           }
      },
      computed: {
@@ -107,6 +124,16 @@ export default {
                }).catch((err) => {
                     console.log(err)     
                });
+     
+          this.axios.get(`http://localhost:3000/api/riesgoNutricio/${this.$route.params.nua}`, this.config)
+               .then((res) => {
+                    this.items = res.data.lista
+
+               }).catch((err) => {
+                    console.log(err);
+               })
+     
+     
      },
      methods: {
           estado_nutri(estado){
