@@ -67,6 +67,13 @@
                </v-col>
                <v-col cols = "4">
                     <v-card>
+                         <v-btn 
+                              @click="nuevoRiesgo = true" 
+                              class="ma-3 white--text" 
+                              color="black">
+                              <v-icon class="mr-2">fas fa-utensils</v-icon>
+                              Nuevo Registro
+                         </v-btn>
                          <v-card-title>
                               Valoraciones de riesgo nutricio
                          </v-card-title>
@@ -79,6 +86,66 @@
                     </v-card>
                </v-col>
           </v-row>
+
+          <!-- Agregar riesgo nutricio -->
+          <v-dialog 
+               v-model="nuevoRiesgo"
+               max-width="80%"
+               scrollable>
+               <v-card>
+                    <v-card-title class="white--text primary headline ligthen-2">
+                         Nuevo Registro de Riesgo Nutricio
+                    </v-card-title>
+                    <v-card-text>
+                         <v-row >
+                              <v-col  justify="center" align="center" cols="12">
+                                   <div id="nav">
+                                        <a @click="nav = 1" :style="ante_patologicos?`color:#4CAF50`:`color:#FF5252`"> Información Personal</a> |
+                                        <a @click="nav = 2" :style="habitos_alimentarios?`color:#4CAF50`:`color:#FF5252`"> Habitos Alimentarios </a> |
+                                        <!-- <a @click="nav = 3" :style="info_contacto?`color:#4CAF50`:`color:#FF5252`"> Contacto de Emergencia</a> -->
+                                   </div>
+                              </v-col>
+                         </v-row>
+
+                         <v-form v-model="ante_patologicos" v-if="nav==1">
+                              <h2>Antecedentes personales patologicos</h2>
+                              <v-container>
+                                   <v-text-field :rules="rules.required" required label="NUA"></v-text-field>
+                                   <v-text-field :rules="rules.required"  required label="Periodo"></v-text-field>
+                                   <v-text-field :rules="rules.required"  required label="Padecimiento actual diagnosticado por un medico"></v-text-field>
+                                   <v-text-field :rules="rules.required"  required label="Cirugias y/o traumatismos recientes(1 a 6 meses)"></v-text-field>
+                                   <v-text-field :rules="rules.required"  required label="Tratamiento medico actual"></v-text-field>
+                              </v-container>
+                         </v-form>
+
+                         <v-form v-model="habitos_alimentarios" v-if="nav==2">
+                              <h2>
+                                   Habitos Alimencios 
+                              </h2>
+                              <v-container>
+                                   <v-text-field :rules="rules.required" required type="number" min='1' label="¿Cuántas comidas realizas en un día?" ></v-text-field>
+                                   <v-checkbox :rules="rules.required" required label="Desayuno"></v-checkbox>
+                                   <v-checkbox :rules="rules.required" required label="Comida"></v-checkbox>
+                                   <v-checkbox :rules="rules.required" required label="Cena"></v-checkbox>
+                                   <v-checkbox :rules="rules.required" required label="Colaciones"></v-checkbox>
+                                   <v-checkbox :rules="rules.required" required label="Comidas en horarios fijos(Marcar == Si)"></v-checkbox>
+                                   <v-text-field :rules="rules.required" required label="¿A qué hora sientes más apetito?"></v-text-field>
+                                   <v-text-field :rules="rules.required" required label="Lugar donde acostumbras a comer regularmente"></v-text-field>
+                                   <v-text-field :rules="rules.required" required label="¿Quién prepara tus alimentos?"></v-text-field>
+                                   <v-checbox :rules="rules.required" required label="¿Donde vives, cuentes con los servicios basicos para preparar tus alimentos?"></v-checbox>
+                                   <v-text-field :rules="rules.required" required type="number" min='0' label="Cantidad de agua simple que consume al día(litros)"></v-text-field>
+                                   <v-checkbox :rules="rules.required" required label="¿Fuma?"></v-checkbox>
+                                   <v-text-field label="Cantidad"></v-text-field>
+                                   <v-checkbox label="¿Consume alcohol?"></v-checkbox>
+                                   <v-text-field :rules="rules.required" required  label="Cantidad"></v-text-field>
+                                   <v-text-field :rules="rules.required" required type="number" label="Cantidad de bebidas azucaradas al dìa"></v-text-field>
+                              </v-container>
+                         </v-form>
+                        
+                         
+                    </v-card-text>
+               </v-card>
+          </v-dialog>
      </v-container>
 </template>
 
@@ -98,11 +165,17 @@ export default {
                headers: [
                     {text: 'Periodo', align: 'center', sortable: false, value: 'periodo'}
                ],
-               items: []
+               items: [],
+
+               // Agregar Riesgo Nutricio
+               nuevoRiesgo: false,
+               nav: 1,
+               ante_patologicos: false,
+               habitos_alimentarios: false,
           }
      },
      computed: {
-          ...mapState(['token', 'config']),
+          ...mapState(['token', 'rules','config']),
      },
      created() {
 
