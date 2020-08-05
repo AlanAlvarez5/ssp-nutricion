@@ -7,13 +7,10 @@
 		<v-card>
 			<v-card-title>
 			Consultas de hoy
-			<v-spacer></v-spacer>
-			<NuevaConsulta></NuevaConsulta>
 			</v-card-title>
 			
 			<v-card-text>
 				<Calendario :dashboard="true" :height="450"></Calendario>
-				
 			</v-card-text>
 		</v-card>
 		</v-col>
@@ -24,7 +21,6 @@
 
 <script>
 
-import NuevaConsulta from '../components/NuevaConsulta'
 import Calendario from '../components/Calendario'
 import { mapState } from 'vuex'
 // @ is an alias to /src
@@ -32,7 +28,6 @@ import { mapState } from 'vuex'
 export default {
   name: 'Home',
   components: {
-	  NuevaConsulta,
 	  Calendario
   },
 }

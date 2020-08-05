@@ -8,7 +8,6 @@
                          <v-icon class="mr-3">fas fa-arrow-left</v-icon>
                          Pacientes
                </v-btn>
-               <NuevaConsulta :nua="paciente.nua"></NuevaConsulta>
                <a :href="`mailto:${paciente.correo}`" class="ml-3" :style="'text-decoration: none'">
                     <v-btn dark color="blue">
                               <v-icon class="mr-3">fas fa-envelope</v-icon>
@@ -78,17 +77,83 @@
                          </v-data-table>
                     </v-card>
                </v-col>
+               <v-col cols="4">
+                    <v-card>
+                         <v-card-title>
+                              Historial de consultas
+                         </v-card-title>
+                         <v-data-table
+                              :headers="consultas_headers"
+                              :items="consultas"
+                         
+                         >
+
+                              <template v-slot:item.fecha="{ item }">
+                                   <v-chip :color="getConsultaColor(item)" dark>{{item.fecha.substring(0,10)}}</v-chip>
+                              </template>
+                              <template v-slot:item.actions="{ item }">
+
+                                   <v-tooltip bottom>
+                                        <template v-slot:activator="{ on, attrs }">
+                                             <v-icon
+                                             small
+                                             v-bind="attrs"
+                                             v-on="on"
+                                             class="mr-2"
+                                             @click="consultaActions(item, 1)"
+                                             >
+                                             fas fa-check
+                                             </v-icon>
+                                        </template>
+                                        <span>Asistencia</span>
+                                   </v-tooltip>
+                                   <v-tooltip bottom>
+                                        <template v-slot:activator="{ on, attrs }">
+                                             <v-icon
+                                             small
+                                             v-bind="attrs"
+                                             v-on="on"
+                                             class="mr-2"
+                                             @click="consultaActions(item, 2)"
+                                             >
+                                             fas fa-minus
+                                             </v-icon>
+                                        </template>
+                                        <span>Justificar</span>
+                                   </v-tooltip>
+                                   <v-tooltip bottom>
+                                        <template v-slot:activator="{ on, attrs }">
+                                             <v-icon
+                                             small
+                                             v-bind="attrs"
+                                             v-on="on"
+                                             class="mr-2"
+                                             @click="consultaActions(item, 0)"
+                                             >
+                                             fas fa-times
+                                             </v-icon>
+                                        </template>
+                                        <span>Falta</span>
+                                   </v-tooltip>
+                              </template>
+                         </v-data-table>
+                         <v-card-title>
+
+                              Faltas totales: {{this.faltas}}
+                         </v-card-title>
+                    </v-card>
+
+               </v-col>
           </v-row>
      </v-container>
 </template>
 
 <script>
 import { mapState } from 'vuex';
-import NuevaConsulta from '../components/NuevaConsulta'
 export default {
      name: 'Paciente',
      components: {
-          NuevaConsulta
+
      },
      data() {
           return {
@@ -98,7 +163,14 @@ export default {
                headers: [
                     {text: 'Periodo', align: 'center', sortable: false, value: 'periodo'}
                ],
-               items: []
+               consultas_headers: [
+                    {text: 'Fecha', align: 'center', sortable: true, value: 'fecha'},
+                    {text: 'Hora', align: 'center', sortable: false, value: 'hora_i'},
+                    {text: 'Acciones', align: 'center', sortable: false, value: 'actions'},
+               ],
+               consultas: [],
+               items: [],
+               faltas: 0
           }
      },
      computed: {
@@ -132,7 +204,10 @@ export default {
                }).catch((err) => {
                     console.log(err);
                })
-     
+
+          
+          this.getConsultas()
+          
      
      },
      methods: {
@@ -146,6 +221,51 @@ export default {
                } else if ( estado == 'Baja'){
                     return `color:#FF5252`
                }
+          },
+          consultaActions(item, n){
+
+               let body = {
+                    n,
+                    fecha: item.fecha.substring(0,10),
+                    hora_i: item.hora_i
+               }
+               this.axios.put(`http://localhost:3000/api/consulta/asistencia/${this.$route.params.nua}`, body, this.config)
+               .then((res) => {
+                    this.getConsultas()
+                    this.getFaltas()
+               })
+               .catch((err) => {
+                    console.log(err)
+               })
+          },
+          getConsultas(){
+               this.axios.get(`http://localhost:3000/api/consulta/consultas-nua/${this.$route.params.nua}`, this.config)
+               .then((res) => {
+                    this.consultas = res.data.consultas
+                    this.getFaltas()
+               })
+               .catch((err) => {
+                    console.log(err)
+               })
+          },
+          getConsultaColor(item){
+               if(item.asistencia == 0){
+                    return 'red'
+               } else if (item.asistencia == 1){
+                    return 'green'
+               } else if (item.asistencia == 2){
+                    return 'orange'
+               } else{
+                    return 'gray'
+               }
+          },
+          getFaltas(){
+               this.faltas = 0
+               this.consultas.forEach(element => {
+                    if (element.asistencia == 0){
+                         this.faltas = this.faltas + 1
+                    }
+               });
           }
      },
 }

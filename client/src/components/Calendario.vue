@@ -73,11 +73,12 @@
                               v-model="selectedOpen"
                               :close-on-content-click="false"
                               :activator="selectedElement"
-                              offset-x
+                              offset-y
+                              max-width="350px"
                          >
                               <v-card
                               color="grey lighten-4"
-                              min-width="350px"
+                              max-width="350px"
                               flat
                               >
                               <v-toolbar
@@ -303,17 +304,15 @@
           <v-row justify="center">
                <v-dialog v-model="cita.eliminar" persistent max-width="450px">
                     <v-card>
-                    <v-card-title class="white--text headline error lighten-2">
-                         <span class="headline">Eliminar consulta</span>
+                    <v-card-title class="white--text error">
+                         Eliminar
                     </v-card-title>
                     <v-card-text class="pa-5 ">
-                         <v-row justify="center" align="center">
-                              Se eliminará la cita del paciente {{cita.paciente}} a las {{cita.hora}} hrs. el día {{cita.fecha}}
-                         </v-row>
+                         Se eliminará la cita del paciente {{cita.paciente}}
                     </v-card-text>
                     <v-card-actions>
                          <v-spacer></v-spacer>
-                         <v-btn color="blue darken-1" text @click="cita.eliminar = false">Regresar</v-btn>
+                         <v-btn color="primary darken-1" text @click="cita.eliminar = false">Regresar</v-btn>
                          <v-btn color="red darken-1" text @click="eliminarConsulta(selectedEvent)">Confirmar</v-btn>
                     </v-card-actions>
                     </v-card>
@@ -325,11 +324,10 @@
 
 <script>
 import { mapState } from 'vuex'
-import NuevaConsulta from '../components/NuevaConsulta'
+
 export default {
      name: 'Calendario',
      components:{
-          NuevaConsulta
      },
      props:{
           dashboard: {

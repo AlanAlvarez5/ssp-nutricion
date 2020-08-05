@@ -152,6 +152,67 @@ router.put('/reagendar', isAuth, async ( req, res) => {
 })
 
 
+router.get('/consultas-nua/:nua', isAuth, async ( req, res ) => {
+     try {
+          let fecha = new Date().toISOString().substr(0,10)
+
+          const consultas = await db.query(
+               `select * from consulta 
+               where
+                    nua = '${req.params.nua}'
+                    and
+                    fecha <= '${fecha}'
+               `   
+          )
+          // console.log(consultas)
+
+          res.json({mensaje: 'OK', consultas})
+
+          
+     } catch (error) {
+          console.log(error)
+          return res.status(400).json({
+               mensaje: 'Query Error',
+               error
+           })
+     }
+})
+
+router.put('/asistencia/:nua', isAuth, async ( req, res ) => {
+
+     let body = req.body
+     
+
+     try {
+
+          const consultas = await db.query(
+               `update consulta 
+
+               set asistencia='${req.body.n}'
+
+               where
+                    fecha = '${req.body.fecha}'
+                    and
+                    hora_i = '${req.body.hora_i}' 
+                    and
+                    nua = '${req.params.nua}'
+               `   
+          )
+
+          // console.log(consultas)
+
+          res.json({mensaje: 'OK'})
+
+          
+     } catch (error) {
+          console.log(error)
+          return res.status(400).json({
+               mensaje: 'Query Error',
+               error
+           })
+     }
+})
+
 
 
 module.exports = router
