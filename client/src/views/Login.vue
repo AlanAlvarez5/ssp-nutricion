@@ -2,7 +2,7 @@
      <v-parallax
           dark
           height="100%"
-          src="https://cdn.vuetifyjs.com/images/backgrounds/vbanner.jpg"
+          src="../assets/nutricion.png"
      >
           <v-row align="center" justify="center">
                <v-col align="center" justify="center">
@@ -11,7 +11,7 @@
                     max-width="344"
                     >
                          <v-card-title>
-                              Iniciar Sesión
+                              Sistema de Nutrición
                          </v-card-title>
 
                          <v-card-text>
