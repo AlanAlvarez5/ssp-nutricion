@@ -24,6 +24,10 @@
                </v-btn>
           </v-row>
           <v-row>
+
+
+               <!-- Información general del paciente -->
+
                <v-col cols="4">
                     <v-card>
                          <v-row align="center" justify="space-between">
@@ -66,33 +70,6 @@
                                    </div>
                               </v-col>
                          </v-row>
-                    </v-card>
-               </v-col>
-               <v-col cols = "4">
-                    <v-card>
-                         <v-row align="center">
-                              <v-col cols="8">
-                                   <v-card-title>
-                                        Valoraciones de Riesgo Nutricio
-                                   </v-card-title>
-                              </v-col>
-                              <!-- <v-spacer></v-spacer> -->
-                              <v-col align="end">
-                                   <v-btn 
-                                        @click="nuevoRiesgo = true" 
-                                        class="ma-3 white--text" 
-                                        color="black">
-                                        <v-icon class="mr-2">fas fa-utensils</v-icon>
-                                        Nuevo <br/> Registro
-                                   </v-btn>
-                              </v-col>
-                         </v-row>
-                         <v-data-table 
-                              :headers="headers"
-                              :items="items"
-                         >
-
-                         </v-data-table>
                     </v-card>
                </v-col>
 
@@ -164,8 +141,43 @@
                               Faltas totales: {{this.faltas}}
                          </v-card-title>
                     </v-card>
-
                </v-col>
+
+
+
+               <!-- Riesgo Nutricio  -->
+               <v-col cols = "4">
+                    <v-card>
+                         <v-row align="center">
+                              <v-col cols="8">
+                                   <v-card-title>
+                                        Valoraciones de Riesgo Nutricio
+                                   </v-card-title>
+                              </v-col>
+                              <!-- <v-spacer></v-spacer> -->
+                              <v-col align="end">
+                                   <v-btn 
+                                        @click="nuevoRiesgo = true" 
+                                        class="ma-3 white--text" 
+                                        color="black">
+                                        <v-icon class="mr-2">fas fa-utensils</v-icon>
+                                        Nuevo <br/> Registro
+                                   </v-btn>
+                              </v-col>
+                         </v-row>
+                         <v-data-table 
+                              :headers="headers"
+                              :items="items"
+                         >
+
+                         </v-data-table>
+                    </v-card>
+               </v-col>
+
+               
+
+
+
           </v-row>
 
           <!-- Agregar riesgo nutricio -->
