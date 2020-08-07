@@ -9,6 +9,12 @@
                <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
 
                <v-toolbar-title>SISE Nutrición</v-toolbar-title>
+               <v-spacer></v-spacer>
+               <v-toolbar-item>
+                    <v-icon class="mr-3">fas fa-user</v-icon>
+                    {{usuario.usuario.nombres + ' ' + usuario.usuario.apellido_p}}
+               </v-toolbar-item>
+
 
           </v-app-bar>
 
@@ -16,7 +22,7 @@
                <v-row>
                     <v-col align="center">
                               <h3 class=" white--text">
-                                   {{usuario.usuario.nombres}}
+                                   Menú
                               </h3>
                               <!-- <v-divider class="mx-5"></v-divider> -->
                     </v-col>

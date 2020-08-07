@@ -31,10 +31,14 @@
                <v-col cols="4">
                     <v-card>
                          <v-row align="center" justify="space-between">
-                              <v-col>
+                              <v-col cols="4">
                                    <v-card-title class="ml-3">Información General</v-card-title>
                               </v-col>
                               <v-col align="end" justify="end">
+                                   <v-btn class="mr-3" @click="contactoDialog = true" dark color="purple">
+                                        <v-icon class="mr-1">fas fa-address-book</v-icon>
+                                        Contacto
+                                   </v-btn>
                                    <v-btn class="mr-3" @click="$router.push('/pacientes/')" dark color="warning">
                                         <v-icon class="mr-1">fas fa-user-edit</v-icon>
                                         Editar
@@ -332,15 +336,26 @@
                     </v-card-text>
                </v-card>
           </v-dialog>
+
+
+          <!-- Ver Info de contacto de emergencia -->
+          <v-dialog
+               v-model="contactoDialog"
+               max-width="40%"
+          >
+               <Contacto :id="paciente.contacto_id"></Contacto>
+          </v-dialog>
+
      </v-container>
 </template>
 
 <script>
 import { mapState } from 'vuex';
+import Contacto from '../components/Contacto'
 export default {
      name: 'Paciente',
      components: {
-
+          Contacto
      },
      data() {
           return {
@@ -353,6 +368,7 @@ export default {
                consultas_headers: [
                     {text: 'Fecha', align: 'center', sortable: true, value: 'fecha'},
                     {text: 'Hora', align: 'center', sortable: false, value: 'hora_i'},
+                    {text: 'Nutriologo', align: 'center', sortable: false, value: 'nue'},
                     {text: 'Acciones', align: 'center', sortable: false, value: 'actions'},
                ],
                consultas: [],
@@ -365,6 +381,7 @@ export default {
                ante_patologicos: false,
                habitos_alimentarios: false,
                criterios: false,
+               contactoDialog: false,
           }
      },
      computed: {
