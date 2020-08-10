@@ -27,7 +27,6 @@
           <!-- // Tarjetas pricipales -->
           <v-row>
 
-
                <!-- Información general del paciente -->
 
                <v-col cols="4">
@@ -147,8 +146,6 @@
                     </v-card>
                </v-col>
 
-
-
                <!-- Riesgo Nutricio  -->
                <v-col cols = "4">
                     <v-card>
@@ -178,7 +175,11 @@
                          </v-data-table>
                     </v-card>
                </v-col>
+
           </v-row>
+
+
+          <!-- Dialogs de Acciones -->
 
           <!-- Agregar riesgo nutricio -->
           <v-dialog 
@@ -341,9 +342,15 @@
           </v-dialog>
           
 
-          <V-dialog v-model="prueba1">
+          <v-dialog v-model="prueba1">
                {{riesgoNutricio}}
-          </V-dialog>
+          </v-dialog>
+
+          <!-- Contacto de Emergencia -->
+          <v-dialog v-model="contactoDialog" width="40%">
+               <Contacto :id="paciente.contacto_id"></Contacto>
+          </v-dialog>
+
 
      </v-container>
 </template>
