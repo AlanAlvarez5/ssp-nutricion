@@ -81,58 +81,65 @@
                               max-width="350px"
                               flat
                               >
-                              <v-toolbar
-                              :color="selectedEvent.color"
-                              dark
-                              >
-                                   <v-toolbar-title v-html="selectedEvent.name"></v-toolbar-title>
-                                   <v-spacer></v-spacer>
-                                   <v-tooltip bottom>
-                                        <template v-slot:activator="{ on, attrs }">
-                                        <v-btn
-                                             icon
-                                             dark
-                                             :to="`/pacientes/${selectedEvent.nua}`"
-                                             v-bind="attrs"
-                                             v-on="on"
-                                        >
-                                        
-                                             <v-icon>fas fa-address-card</v-icon>
-                                        </v-btn>
-                                        </template>
-                                        <span>Ir al perfil</span>
-                                   </v-tooltip>
-                                   <v-tooltip bottom>
-                                        <template v-slot:activator="{ on, attrs }">
-                                        <v-btn
-                                             icon
-                                             dark
-                                             @click="editarCitaDialog(selectedEvent)"
-                                             v-bind="attrs"
-                                             v-on="on"
-                                        >
-                                        
-                                             <v-icon>fas fa-pencil-alt</v-icon>
-                                        </v-btn>
-                                        </template>
-                                        <span>Reagendar</span>
-                                   </v-tooltip>
-                                   <v-tooltip bottom>
-                                        <template v-slot:activator="{ on, attrs }">
-                                        <v-btn
-                                             icon
-                                             dark
-                                             @click="cancelarConsultaDialog(selectedEvent)"
-                                             v-bind="attrs"
-                                             v-on="on"
-                                        >
-                                        
-                                             <v-icon>fas fa-trash-alt</v-icon>
-                                        </v-btn>
-                                        </template>
-                                        <span>Cancelar</span>
-                                   </v-tooltip>
-                              </v-toolbar>
+                                   <v-toolbar
+                                   :color="selectedEvent.color"
+                                   dark
+                                   >
+                                        <v-toolbar-title>
+                                             {{selectedEvent.name}}
+                                        </v-toolbar-title>
+                                        <v-spacer></v-spacer>
+                                        <v-tooltip bottom>
+                                             <template v-slot:activator="{ on, attrs }">
+                                             <v-btn
+                                                  icon
+                                                  dark
+                                                  :to="`/pacientes/${selectedEvent.nua}`"
+                                                  v-bind="attrs"
+                                                  v-on="on"
+                                             >
+                                             
+                                                  <v-icon>fas fa-address-card</v-icon>
+                                             </v-btn>
+                                             </template>
+                                             <span>Ir al perfil</span>
+                                        </v-tooltip>
+                                        <v-tooltip bottom>
+                                             <template v-slot:activator="{ on, attrs }">
+                                             <v-btn
+                                                  icon
+                                                  dark
+                                                  @click="editarCitaDialog(selectedEvent)"
+                                                  v-bind="attrs"
+                                                  v-on="on"
+                                             >
+                                             
+                                                  <v-icon>fas fa-pencil-alt</v-icon>
+                                             </v-btn>
+                                             </template>
+                                             <span>Reagendar</span>
+                                        </v-tooltip>
+                                        <v-tooltip bottom>
+                                             <template v-slot:activator="{ on, attrs }">
+                                             <v-btn
+                                                  icon
+                                                  dark
+                                                  @click="cancelarConsultaDialog(selectedEvent)"
+                                                  v-bind="attrs"
+                                                  v-on="on"
+                                             >
+                                             
+                                                  <v-icon>fas fa-trash-alt</v-icon>
+                                             </v-btn>
+                                             </template>
+                                             <span>Cancelar</span>
+                                        </v-tooltip>
+                                   </v-toolbar>
+                                   <v-card-text>
+                                        Horario: {{selectedEvent.hora}} - {{selectedEvent.hora_f}} hrs.
+                                        <br/> 
+                                        NUE del Nutriologo: {{selectedEvent.nue}}
+                                   </v-card-text>
                               </v-card>
                          </v-menu>
                     </v-sheet>
@@ -433,7 +440,7 @@ export default {
 						
 						const date_i = new Date(full_date + 'T' +item.hora_i)
 						const date_f = new Date(full_date + 'T' +item.hora_f)
-
+                              let color = item.nue == this.usuario.usuario.nue ? 'green': 'primary'
                               consultas.push({
 							name: item.paciente,
 							nua: item.nua,
@@ -443,7 +450,7 @@ export default {
                                    hora: item.hora_i,
                                    hora_f: item.hora_f,
                                    end: date_f, 
-                                   color: 'purple', 
+                                   color,
                                    timed: true,
                               })
                          });

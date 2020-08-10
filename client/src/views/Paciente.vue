@@ -26,14 +26,26 @@
 
           <!-- // Tarjetas pricipales -->
           <v-row>
+
+
+               <!-- Información general del paciente -->
+
                <v-col cols="4">
                     <v-card>
-                         <v-row  >
-                              <v-card-title class="ml-3 pb-0">Información General</v-card-title>
-                              <v-btn class="ml-3 mt-3" @click="$router.push('/pacientes/')" dark color="warning">
-                                   <v-icon class="mr-1">fas fa-user-edit</v-icon>
-                                   Editar
-                              </v-btn>
+                         <v-row align="center" justify="space-between">
+                              <v-col cols="4">
+                                   <v-card-title class="ml-3">Información General</v-card-title>
+                              </v-col>
+                              <v-col align="end" justify="end">
+                                   <v-btn class="mr-3" @click="contactoDialog = true" dark color="purple">
+                                        <v-icon class="mr-1">fas fa-address-book</v-icon>
+                                        Contacto
+                                   </v-btn>
+                                   <v-btn class="mr-3" @click="$router.push('/pacientes/')" dark color="warning">
+                                        <v-icon class="mr-1">fas fa-user-edit</v-icon>
+                                        Editar
+                                   </v-btn>
+                              </v-col>
                          </v-row>
                          <v-row class="pb-0 mb-0 mt-3">
                               <v-col cols="6" class="pb-0 mb-0">
@@ -67,32 +79,6 @@
                     </v-card>
                </v-col>
 
-
-               <!-- Historial de Riesgo Nutricio -->
-               <v-col cols = "4">
-                    <v-card>
-                         <v-btn 
-                              @click="nuevoRiesgo = true" 
-                              class="ma-3 white--text" 
-                              color="black">
-                              <v-icon class="mr-2">fas fa-utensils</v-icon>
-                              Nuevo Registro
-                         </v-btn>
-                         <v-card-title>
-                              Valoraciones de riesgo nutricio
-                         </v-card-title>
-                         <v-data-table 
-                              :headers="headers"
-                              :items="items"
-                              @click:row="routerRiesgoNutricio"
-                         >
-
-                         </v-data-table>
-                    </v-card>
-               </v-col>
-
-
-
                <!-- Historial de Consultas -->
                <v-col cols="4">
                     <v-card>
@@ -103,7 +89,6 @@
                               :headers="consultas_headers"
                               :items="consultas"
                               :items-per-page="5"
-                              dense
                          
                          >
                               <template v-slot:item.fecha="{ item }">
@@ -117,7 +102,7 @@
                                              small
                                              v-bind="attrs"
                                              v-on="on"
-                                             class="mr-2"
+                                             class="mr-3"
                                              @click="consultaActions(item, 1)"
                                              >
                                              fas fa-check
@@ -131,7 +116,7 @@
                                              small
                                              v-bind="attrs"
                                              v-on="on"
-                                             class="mr-2"
+                                             class="mr-3"
                                              @click="consultaActions(item, 2)"
                                              >
                                              fas fa-minus
@@ -145,7 +130,7 @@
                                              small
                                              v-bind="attrs"
                                              v-on="on"
-                                             class="mr-2"
+                                             class="mr-3"
                                              @click="consultaActions(item, 0)"
                                              >
                                              fas fa-times
@@ -160,7 +145,38 @@
                               Faltas totales: {{this.faltas}}
                          </v-card-title>
                     </v-card>
+               </v-col>
 
+
+
+               <!-- Riesgo Nutricio  -->
+               <v-col cols = "4">
+                    <v-card>
+                         <v-row align="center">
+                              <v-col cols="8">
+                                   <v-card-title>
+                                        Valoraciones de Riesgo Nutricio
+                                   </v-card-title>
+                              </v-col>
+                              <!-- <v-spacer></v-spacer> -->
+                              <v-col align="end">
+                                   <v-btn 
+                                        @click="nuevoRiesgo = true" 
+                                        class="ma-3 white--text" 
+                                        color="black">
+                                        <v-icon class="mr-2">fas fa-utensils</v-icon>
+                                        Nuevo <br/> Registro
+                                   </v-btn>
+                              </v-col>
+                         </v-row>
+                         <v-data-table 
+                              :headers="headers"
+                              :items="items"
+                              @click:row="routerRiesgoNutricio"
+                         >
+
+                         </v-data-table>
+                    </v-card>
                </v-col>
           </v-row>
 
@@ -334,10 +350,11 @@
 
 <script>
 import { mapState } from 'vuex';
+import Contacto from '../components/Contacto'
 export default {
      name: 'Paciente',
      components: {
-
+          Contacto
      },
      data() {
           return {
@@ -351,6 +368,7 @@ export default {
                consultas_headers: [
                     {text: 'Fecha', align: 'center', sortable: true, value: 'fecha'},
                     {text: 'Hora', align: 'center', sortable: false, value: 'hora_i'},
+                    {text: 'Nutriologo', align: 'center', sortable: false, value: 'nue'},
                     {text: 'Acciones', align: 'center', sortable: false, value: 'actions'},
                ],
                consultas: [],
@@ -364,6 +382,7 @@ export default {
                ante_patologicos: false,
                habitos_alimentarios: false,
                criterios: false,
+               contactoDialog: false,
           }
      },
      computed: {

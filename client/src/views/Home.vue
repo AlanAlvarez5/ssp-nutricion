@@ -1,6 +1,6 @@
 <template>
 	<v-container>
-		<h1>Dashboard</h1> 
+		<h1>Bienvenido {{usuario.usuario.nombres}}</h1> 
 
 	<v-row justify="end">
 		<v-col cols="6" justify="end">
@@ -29,6 +29,9 @@ export default {
   name: 'Home',
   components: {
 	  Calendario
+  },
+  computed: {
+	  ...mapState(['usuario'])
   },
 }
 </script>
