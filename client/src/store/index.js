@@ -30,7 +30,7 @@ export default new Vuex.Store({
 				state.usuario = ''
 			} else {
 				state.usuario = decode(payload)
-				router.push({ name: 'Home' })
+				router.push({ name: 'Consultas' })
 			}
 		}
 	},

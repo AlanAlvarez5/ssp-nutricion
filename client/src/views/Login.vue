@@ -4,6 +4,19 @@
           height="100%"
           src="../assets/nutricion.png"
      >
+          <v-row class="my-0" align="center" justify="space-arround" :style="{backgroundColor: '#002F56', maxHeight: '15%', minHeight: '50px',  opacity: '0.80'}">
+
+               <v-col cols="3" align="center" justify="center">
+                    <div >
+                         <v-img src="../assets/escudoug.png" width="200px"></v-img>
+                    </div>
+               </v-col>
+               <v-col justify="center" align="center">
+                    <h1>Sistema de Nutrición</h1>
+               </v-col>
+               <v-col cols="3">
+               </v-col>
+          </v-row>
           <v-row align="center" justify="center">
                <v-col align="center" justify="center">
                     <v-card
@@ -11,7 +24,7 @@
                     max-width="344"
                     >
                          <v-card-title>
-                              Sistema de Nutrición
+                              Iniciar Sesión
                          </v-card-title>
 
                          <v-card-text>

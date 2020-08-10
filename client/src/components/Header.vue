@@ -64,9 +64,8 @@
                return {
                     drawer: 'true',
                     items: [
-                         { title: 'Home', icon: 'fas fa-home', to: {name: 'Home'}},
-                         { title: 'Pacientes', icon: 'fas fa-hospital-user', to: {name: 'Pacientes'}},
                          { title: 'Consultas', icon: 'fas fa-calendar-day', to: {name: 'Consultas'}},
+                         { title: 'Pacientes', icon: 'fas fa-hospital-user', to: {name: 'Pacientes'}},
                     ],
                }
           },
