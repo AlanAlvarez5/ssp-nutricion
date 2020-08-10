@@ -341,7 +341,7 @@
           </v-dialog>
           
 
-          <V-dialog 
+          <v-dialog 
                v-model="prueba1"
                max-width="80%"
                scrollable>
@@ -498,7 +498,7 @@
                          
                     </v-card-text>
                </v-card>
-          </V-dialog>
+          </v-dialog>
 
      </v-container>
 </template>
