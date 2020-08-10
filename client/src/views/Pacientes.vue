@@ -582,7 +582,7 @@ export default {
                this.alert = false
           },
           perfilAlumno(value){
-               // console.log(value.nua)
+               console.log(value.nua)
                this.$router.push(`/pacientes/${value.nua}`)
           },
           estado_nutri(estado){

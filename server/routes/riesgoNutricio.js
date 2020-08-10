@@ -96,6 +96,26 @@ router.get('/:nua', isAuth, async(req, res) => {
 
 })
 
+router.get('/:nua/:periodo', isAuth, async(req, res) => {
+    const nua = req.params.nua
+    const periodo = req.params.periodo
+
+    try {
+        const registro = await db.query(`select * from riesgo_nutricio where nua = '${nua}' and periodo = '${periodo}'`)
+
+        res.json({
+            mensaje: 'OK',
+            lista: registro[0]
+        })
+    } catch (error) {
+        return error.status(400).json({
+            mensaje: 'Query Error',
+            error
+        })
+    }
+
+})
+
 /* insert into riesgo_nutricio (
     nua,
     periodo,

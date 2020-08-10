@@ -1,7 +1,7 @@
 <template>
      <v-container>
           <v-row align="center">
-               <h1 class="my-5">Paciente {{ paciente.nombres }}</h1>
+               <h1 class="my-5">Paciente: {{ paciente.nombres }} </h1>
                <h4 class="ml-5" :style="estado_nutri(paciente.estado_nutri)">{{paciente.estado_nutri}}</h4>
                <v-spacer></v-spacer>
                <v-btn @click="$router.push('/pacientes/')" dark color="primary">
@@ -23,6 +23,8 @@
                     Continuar <br>Tratamiento
                </v-btn>
           </v-row>
+
+          <!-- // Tarjetas pricipales -->
           <v-row>
                <v-col cols="4">
                     <v-card>
@@ -64,6 +66,9 @@
                          </v-row>
                     </v-card>
                </v-col>
+
+
+               <!-- Historial de Riesgo Nutricio -->
                <v-col cols = "4">
                     <v-card>
                          <v-btn 
@@ -79,6 +84,7 @@
                          <v-data-table 
                               :headers="headers"
                               :items="items"
+                              @click:row="routerRiesgoNutricio"
                          >
 
                          </v-data-table>
@@ -180,10 +186,11 @@
 
                          <v-form v-model="ante_patologicos" v-if="nav==1">
                               <h2>Antecedentes personales patológicos</h2>
+                              <h1 class="my-5">Paciente: {{ paciente.nombres }}.</h1>
                               <v-container>
                                    <v-row justify="center" align="center">
                                         <v-col cols="5">
-                                             <v-text-field :rules="rules.required" required label="NUA"></v-text-field>
+                                             <v-text-field :rules="rules.required" required label="NUA" v-model="items.nua"></v-text-field>
                                         </v-col>
                                         <v-col cols="5">
                                              <v-text-field :rules="rules.required" required label="Período"></v-text-field>
@@ -302,6 +309,12 @@
                                                   label="Los hábitos actuales de alimentación representan un factor de riesgo en el estado de salud">
                                              </v-checkbox>
                                         </v-col>
+                                        <v-col cols="10">
+                                             <v-textarea label="Diagnóstico"></v-textarea>
+                                        </v-col>
+                                        <v-col cols="10">
+                                             <v-text-field label="Institución(Hospital)"></v-text-field>
+                                        </v-col>
                                    </v-row>
                               </v-container>
                          </v-form>
@@ -310,6 +323,12 @@
                     </v-card-text>
                </v-card>
           </v-dialog>
+          
+
+          <V-dialog v-model="prueba1">
+               {{riesgoNutricio}}
+          </V-dialog>
+
      </v-container>
 </template>
 
@@ -323,6 +342,7 @@ export default {
      data() {
           return {
                paciente: {},
+               riesgoNutricio: {},
                pacienteInfo: [],
                meses: ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'],
                headers: [
@@ -338,6 +358,7 @@ export default {
                faltas: 0,
 
                // Agregar Riesgo Nutricio
+               prueba1: false,
                nuevoRiesgo: false,
                nav: 1,
                ante_patologicos: false,
@@ -349,7 +370,7 @@ export default {
           ...mapState(['token', 'rules','config']),
      },
      created() {
-
+          // console.log(this.$route)
           this.axios.get(`http://localhost:3000/api/alumno/${this.$route.params.nua}`, this.config)
                .then((result) => {
                     this.paciente = result.data[0]
@@ -372,11 +393,11 @@ export default {
           this.axios.get(`http://localhost:3000/api/riesgoNutricio/${this.$route.params.nua}`, this.config)
                .then((res) => {
                     this.items = res.data.lista
+                    console.log(this.items)
 
                }).catch((err) => {
                     console.log(err);
                })
-
           
           this.getConsultas()
           
@@ -437,6 +458,25 @@ export default {
                     if (element.asistencia == 0){
                          this.faltas = this.faltas + 1
                     }
+               });
+          },
+          routerRiesgoNutricio(value){
+               // console.log(value.params)
+               // this.$router.push(`/riesgoNutricio/${value.nua}/${value.periodo}`)
+               console.log(value);
+               this.riesgoNutricio = value
+               console.log(this.riesgoNutricio);
+               this.prueba1 = true
+
+          },
+          getRiesgoNutricio(value){
+               this.axios.get(`http://localhost:3000/api/riesgoNutricio/${this.$route.params.nua}/${this.$route.params.periodo}`, this.config)
+               .then((res) => {
+                    this.riesgoNutricio = res.data.lista
+                    console.log(this.riesgoNutricio)
+
+               }).catch((err) => {
+                    console.log(err)
                });
           }
      },
