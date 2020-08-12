@@ -6,7 +6,7 @@ const router = express.Router()
 const db = require('../db')
 
 router.post('/nuevo', isAuth, async(req, res) => {
-    const body = req.body
+    const body = req.body.riesgoNutri
 
     try {
         const riesgoNutri = await db.query(
@@ -21,16 +21,16 @@ router.post('/nuevo', isAuth, async(req, res) => {
                 comida,
                 cena,
                 colaciones,
+                horario_fijo,
                 hora_apetito,
                 lugar_comida,
                 cocinero,
                 servicios_basicos,
                 cantidad_agua,
-                consumo_tablaco,
+                consumo_tabaco,
                 cantidad_tabaco,
                 consumo_alcohol,
                 cantidad_alcohol,
-                consumo_azucar,
                 cantidad_azucar,
                 criterio_1,
                 criterio_2,
@@ -46,31 +46,36 @@ router.post('/nuevo', isAuth, async(req, res) => {
                 '${body.cirugias}',
                 '${body.tratamiento}',
                 '${body.n_comidas}',
-                '${body.desayuno}',
-                '${body.comida}',
-                '${body.cena}',
-                '${body.colaciones}',
+                ${body.desayuno},
+                ${body.comida},
+                ${body.cena},
+                ${body.colaciones},
+                ${body.horario_fijo},
                 '${body.hora_apetito}',
                 '${body.lugar_comida}',
                 '${body.cocinero}',
-                '${body.servicios_basicos}',
+                ${body.servicios_basicos},
                 '${body.cantidad_agua}',
-                '${body.consumo_tablaco}',
+                ${body.consumo_tabaco},
                 '${body.cantidad_tabaco}',
-                '${body.consumo_alcohol}',
+                ${body.consumo_alcohol},
                 '${body.cantidad_alcohol}',
-                '${body.consumo_azucar}',
                 '${body.cantidad_azucar}',
-                '${body.criterio_1}',
-                '${body.criterio_2}',
-                '${body.criterio_3}',
-                '${body.criterio_4}',
-                '${body.criterio_5}',
+                ${body.criterio_1},
+                ${body.criterio_2},
+                ${body.criterio_3},
+                ${body.criterio_4},
+                ${body.criterio_5},
                 '${body.diagnostico}',
                 '${body.institucion}'
-            )`)        
-            res.json({mensaje: 'OK'})
+            )`
+        )        
+            res.json({
+                mensaje: 'AGREGADO',
+                riesgoNutril: req.body.riesgoNutri
+        })
     } catch (error) {
+        console.log(error);
         return res.status(400).json({
             mensaje: 'Query Error',
             error
@@ -174,5 +179,35 @@ router.get('/:nua/:periodo', isAuth, async(req, res) => {
     'asdasd',
     'asdasd',
     'asdasd') */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 module.exports = router
