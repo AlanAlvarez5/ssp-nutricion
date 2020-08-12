@@ -44,7 +44,7 @@
           >    
                <v-card>
 
-                    <v-card-title class="white--text headline primary lighten-2">
+                    <v-card-title class="white--text headline primary">
                          Nuevo Paciente
                     </v-card-title>
                     <v-card-text style="min-height:30rem">
@@ -54,16 +54,15 @@
                               background-color="transparent"
                               color="primary"
                               grow
-
                          >
-                              <v-tab :key="1" :style="info_personal?`color:#4CAF50`:`color:#FF5252`">
-                                   Información Personal
+                              <v-tab :key="1" >
+                                   <span :style="info_personal?`color:#4CAF50`:`color:#FF5252`">Información Personal</span>
                               </v-tab>
-                              <v-tab :key="2" :style="info_academica?`color:#4CAF50`:`color:#FF5252`">
-                                   Información Académica
+                              <v-tab :key="2">
+                                  <span  :style="info_academica?`color:#4CAF50`:`color:#FF5252`"> Información Académica</span> 
                               </v-tab>
-                              <v-tab :key="3" :style="info_contacto?`color:#4CAF50`:`color:#FF5252`">
-                                   Contacto de Emergencia
+                              <v-tab :key="3" >
+                                   <span :style="info_contacto?`color:#4CAF50`:`color:#FF5252`">Contacto de Emergencia</span> 
                               </v-tab>
                          </v-tabs>
 
@@ -382,316 +381,6 @@
                               </v-tab-item>
                          </v-tabs-items>
 
-                         <!-- Informacion personal -->
-                         <!-- <v-form v-model="info_personal">
-                              <v-container >
-                                        <v-row justify="center" align="center">
-                                             <v-col cols="3">
-                                                  <v-text-field
-                                                       v-model="paciente.nombres"
-                                                       :rules="rules.required"
-                                                       label="Nombre(s)"
-                                                       required
-                                                  ></v-text-field>
-                                             </v-col>
-                                             <v-col cols="3">
-                                                  <v-text-field
-                                                       v-model="paciente.apellido_p"
-                                                       :rules="rules.required"
-                                                       label="Apellido Paterno"
-                                                       required
-                                                  ></v-text-field>
-                                             </v-col >
-                                             <v-col cols="3">
-                                                  <v-text-field
-                                                       v-model="paciente.apellido_m"
-                                                       :rules="rules.required"
-                                                       label="Apellido Materno"
-                                                       required
-                                                  ></v-text-field>
-                                             </v-col>
-
-                                        </v-row>
-                                        <v-row justify="center" align="center">
-                                             <v-col cols="3">
-                                                  <v-select
-                                                  v-model="paciente.genero"
-                                                  :items="['M', 'F', 'Otro']"
-                                                  :rules="rules.required"
-                                                  label="Género"
-                                                  required
-                                                  ></v-select>
-                                             </v-col>
-                                             <v-col cols="3">
-                                                  <v-text-field
-                                                  v-model="paciente.edad"
-                                                  :rules="rules.edad"
-                                                  label="Edad"
-                                                  type="number"
-                                                  min="1"
-                                                  required
-                                                  ></v-text-field>
-                                             </v-col>
-                                             <v-col cols="3">
-                                                  <v-select
-                                                  v-model="paciente.estado_civil"
-                                                  :items="['Soltero/a', 'Comprometido/a', 'En relación', 'Casado/a', 'Union Libre', 'Separado/a', 'Divorciado/a', 'Viudo/a']"
-                                                  :rules="rules.required"
-                                                  label="Estado Civil"
-                                                  required
-                                                  ></v-select>
-                                             </v-col>
-
-                                        </v-row>
-                                        <v-row justify="center" align="center">
-                                             <v-col cols="3">
-                                                  <v-menu
-                                                  v-model="nacimiento"
-                                                  :close-on-content-click="false"
-                                                  transition="scale-transition"
-                                                  offset-y
-                                                  min-width="290px"
-                                                  >
-                                                  <template v-slot:activator="{ on, attrs }">
-                                                       <v-text-field
-                                                       v-model="paciente.fecha_nacimiento"
-                                                       label="Fecha de Nacimiento"
-                                                       prepend-icon="fas fa-calendar-alt"
-                                                       readonly
-                                                       v-bind="attrs"
-                                                       v-on="on"
-                                                       :rules="rules.required"
-                                                       ></v-text-field>
-                                                  </template>
-                                                  <v-date-picker
-                                                       v-model="paciente.fecha_nacimiento"
-                                                       :max="new Date().toISOString().substr(0, 10)"
-                                                       min="1950-01-01"
-                                                  ></v-date-picker>
-                                                  </v-menu>
-                                             </v-col>
-                                             <v-col cols="3">
-                                                  <v-select
-                                                  v-model="estado"
-                                                  :items="estados"
-                                                  :rules="rules.required"
-                                                  label="Estado de Nacimiento"
-                                                  ></v-select>
-                                             </v-col>
-                                             <v-col cols="3">
-                                                  <v-select
-                                                  v-model="paciente.ciudad_nacimiento"
-                                                  :items="municipios"
-                                                  :rules="rules.required"
-                                                  label="Ciudad de Nacimiento"
-                                                  :disabled="municipios_disable"
-                                                  ></v-select>
-                                             </v-col>
-                                        </v-row>
-                                        <v-row justify="center" align="center">
-                                             <v-col cols="9">
-                                                  <v-text-field
-                                                       v-model="paciente.domicilio_residencia"
-                                                       :rules="rules.required"
-                                                       label="Domicilio de residencia"
-                                                       required
-                                                  ></v-text-field>
-                                                  <v-text-field
-                                                       v-model="paciente.domicilio_origen"
-                                                       :rules="rules.required"
-                                                       label="Domicilio de origen"
-                                                       required
-                                                  ></v-text-field>
-                                             </v-col>
-                                        </v-row>
-                              </v-container>
-                         </v-form> -->
-
-                         <!-- Informacón Académica -->
-                         <!-- <v-form v-model="info_academica" v-if="nav==2">
-                              <h2>Información Académica</h2>
-                              <v-container>
-                                   <v-row justify="center" align="center">
-                                        <v-col cols="9">
-                                             <v-text-field
-                                                  v-model="paciente.nua"
-                                                  :rules="rules.number"
-                                                  label="NUA"
-                                                  required
-                                                  type="number"
-                                             ></v-text-field>
-                                        </v-col>
-                                   </v-row>
-                                   <v-row justify="center" align="center">
-                                        <v-col cols="3">
-                                             <v-text-field
-                                                  v-model="paciente.nombre_division"
-                                                  :rules="rules.required"
-                                                  label="División"
-                                                  disabled
-                                             ></v-text-field>
-                                        </v-col>
-                                        <v-col cols="3">
-                                                  <v-select
-                                                  v-model="paciente.programa_educativo"
-                                                  :items="['Ing. en Sistemas Computacionales', 'Ing. Eléctrica', 'Ing. en Comunicaciones y Elecrónica', 'Ing. Mecánica', 'Ing. Mecatrónica', 'Artes Digitales', 'Gestión Empresarial']"
-                                                  :rules="rules.required"
-                                                  label="Programa Educativo"
-                                                  ></v-select>
-                                        </v-col>
-                                        <v-col cols="3">
-                                             <v-text-field
-                                                  v-model="periodo"
-                                                  :rules="rules.required"
-                                                  label="Periodo"
-                                                  disabled
-                                             ></v-text-field>
-                                        </v-col>
-                                   </v-row>
-                                   <v-row justify="center" align="center">
-                                        <v-col cols="3">
-                                                  <v-menu
-                                                  v-model="ingreso"
-                                                  :close-on-content-click="false"
-                                                  transition="scale-transition"
-                                                  offset-y
-                                                  min-width="290px"
-                                                  >
-                                                  <template v-slot:activator="{ on, attrs }">
-                                                       <v-text-field
-                                                       v-model="paciente.fecha_ingreso"
-                                                       label="Fecha de Ingreso"
-                                                       prepend-icon="fas fa-calendar-alt"
-                                                       readonly
-                                                       v-bind="attrs"
-                                                       v-on="on"
-                                                       :rules="rules.required"
-                                                       ></v-text-field>
-                                                  </template>
-                                                  <v-date-picker
-                                                       v-model="paciente.fecha_ingreso"
-                                                       :max="new Date().toISOString().substr(0, 10)"
-                                                       min="1950-01-01"
-                                                  ></v-date-picker>
-                                                  </v-menu>
-                                             </v-col>
-                                             <v-col cols="6">
-                                                  <v-text-field
-                                                       v-model="paciente.correo"
-                                                       :rules="rules.mail"
-                                                       label="Correo Institucional"
-                                                  ></v-text-field>
-                                             </v-col>
-                                   </v-row>
-                                   <v-row justify="center" align="center">
-                                        <v-col cols="3">
-                                             <v-text-field
-                                                       v-model="paciente.descubrimiento"
-                                                       :rules="rules.required"
-                                                       required
-                                                       label="¿Cómo descubrió esto?"
-                                             ></v-text-field>
-                                        </v-col>
-                                        <v-col cols="6">
-                                             <v-text-field
-                                                       v-model="paciente.disponibilidad"
-                                                       :rules="rules.required"
-                                                       label="Disponibilidad"
-                                             ></v-text-field>
-                                        </v-col>
-                                   </v-row>
-                              </v-container>
-                         </v-form> -->
-
-                         <!-- Información Contacto -->
-                         <!-- <v-form v-model="info_contacto" v-if="nav==3">
-                              <h2>Contacto de Emergencia</h2>
-                              <v-row justify="center" align="center">
-                                   <v-col cols="3">
-                                        <v-text-field
-                                             v-model="contacto.nombres"
-                                             :rules="rules.required"
-                                             label="Nombre(s)"
-                                             required
-                                        ></v-text-field>
-                                   </v-col>
-                                   <v-col cols="3">
-                                        <v-text-field
-                                             v-model="contacto.apellido_p"
-                                             :rules="rules.required"
-                                             label="Apellido Paterno"
-                                             required
-                                        ></v-text-field>
-                                   </v-col >
-                                   <v-col cols="3">
-                                        <v-text-field
-                                             v-model="contacto.apellido_m"
-                                             :rules="rules.required"
-                                             label="Apellido Materno"
-                                             required
-                                        ></v-text-field>
-                                   </v-col>
-
-                              </v-row>     
-                              <v-row justify="center" align="center">
-                                   <v-col cols="6">
-                                        <v-text-field
-                                             v-model="contacto.correo"
-                                             :rules="rules.mail"
-                                             label="Correo electrónico"
-                                             required
-                                        ></v-text-field>
-                                   </v-col>
-                                   <v-col cols="3">
-                                        <v-text-field
-                                             v-model="contacto.telefono"
-                                             :rules="rules.number"
-                                             label="Número de Teléfono"
-                                             required
-                                             type="number"
-                                        ></v-text-field>
-                                   </v-col >
-                              </v-row>     
-                              <v-row justify="center" align="center">
-                                   <v-col cols="6">
-                                        <v-text-field
-                                             v-model="contacto.direccion"
-                                             :rules="rules.required"
-                                             label="Dirección"
-                                             required
-                                        ></v-text-field>
-                                   </v-col>
-                                   <v-col cols="3">
-                                        <v-text-field
-                                             v-model="contacto.colonia"
-                                             :rules="rules.required"
-                                             label="Colonia"
-                                             required
-                                        ></v-text-field>
-                                   </v-col>
-                              </v-row>    
-                              <v-row justify="center" align="center">
-                                    <v-col cols="3">
-                                        <v-select
-                                        v-model="contacto_estado"
-                                        :items="estados"
-                                        :rules="rules.required"
-                                        label="Estado"
-                                        ></v-select>
-                                   </v-col>
-                                   <v-col cols="6">
-                                        <v-select
-                                        v-model="contacto.ciudad"
-                                        :items="contacto_municipios"
-                                        :rules="rules.required"
-                                        label="Ciudad"
-                                        :disabled="contacto_municipios_disable"
-                                        ></v-select>
-                                   </v-col>
-
-                              </v-row>     
-                         </v-form> -->
-
                     </v-card-text>
                     <v-divider></v-divider>
 
@@ -762,7 +451,6 @@ export default {
 
                // Agregar Paciente
                tab: null,
-               nav: 1,
                info_personal: false,
                info_academica: false,
                info_contacto: false,
@@ -813,8 +501,8 @@ export default {
                municipios_disable: true,
                contacto_municipios_disable: true,
                alert: false,
+               type: 'success',
                mensaje: '',
-               type: 'success'
 
           }
      },
