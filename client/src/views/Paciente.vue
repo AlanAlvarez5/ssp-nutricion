@@ -237,7 +237,9 @@
                                              <v-row justify="center" align="center">
                                                   <v-col  cols="10">
                                                        <v-text-field 
-                                                            :rules="rules.required" required label="Tratamiento médico actual"
+                                                            :rules="rules.required" 
+                                                            required 
+                                                            label="Tratamiento médico actual"
                                                             v-model="riesgoNutricio.tratamiento"
                                                        ></v-text-field>
                                                   </v-col>
@@ -247,43 +249,36 @@
                               </v-tab-item>
                               <v-tab-item :key="2">
                                    <v-form v-model="habitos_alimentarios">
-                                        <h2>
-                                             Hábitos Alimencios 
-                                        </h2>
                                         <v-container>
                                              <v-row justify="center" align="center">
                                                   <v-col cols="6">
                                                        <v-text-field 
                                                             :rules="rules.required" 
-                                                            required type="number" min='1' label="¿Cuántas comidas realizas en un día?" 
+                                                            required type="number" min='1' 
+                                                            label="¿Cuántas comidas realizas en un día?" 
                                                             v-model="riesgoNutricio.n_comidas"
                                                        ></v-text-field>
                                                   </v-col>
                                                   <v-col cols="1">
                                                        <v-checkbox
-                                                            :rules="rules.required" required 
                                                             label="Desayuno"
                                                             v-model="riesgoNutricio.desayuno"
                                                        ></v-checkbox>
                                                   </v-col>
                                                   <v-col cols="1">
                                                        <v-checkbox 
-                                                            :rules="rules.required" required 
                                                             label="Comida"
                                                             v-model="riesgoNutricio.comida"
                                                        ></v-checkbox>
                                                   </v-col>
                                                   <v-col cols="1">
                                                        <v-checkbox 
-                                                            :rules="rules.required" required 
                                                             label="Cena"
                                                             v-model="riesgoNutricio.cena"
                                                        ></v-checkbox>
                                                   </v-col>
                                                   <v-col cols="1">
                                                        <v-checkbox 
-                                                            :rules="rules.required" 
-                                                            required 
                                                             label="Colaciones"
                                                             v-model="riesgoNutricio.colaciones"
                                                        ></v-checkbox>
@@ -292,8 +287,6 @@
                                              <v-row justify="center" align="center">
                                                   <v-col cols="2">
                                                        <v-checkbox 
-                                                            :rules="rules.required" 
-                                                            required 
                                                             label="¿Comidas en horarios fijos?"
                                                             v-model="riesgoNutricio.horario_fijo"
                                                        ></v-checkbox>
@@ -324,8 +317,6 @@
                                                   </v-col>
                                                   <v-col cols="2">
                                                        <v-checkbox 
-                                                            :rules="rules.required" 
-                                                            required 
                                                             label="¿Dónde vives cuentas con los servicios básicos para preparar tus alimentos?" 
                                                             v-model="riesgoNutricio.servicios_basicos"
                                                        ></v-checkbox>
@@ -361,6 +352,7 @@
                                                   </v-col>
                                                   <v-col cols="4">
                                                        <v-text-field 
+                                                            v-if="riesgoNutricio.consumo_tabaco"
                                                             label="Cantidad"
                                                             v-model="riesgoNutricio.cantidad_tabaco"
                                                        ></v-text-field>
@@ -372,7 +364,8 @@
                                                        ></v-checkbox>
                                                   </v-col>
                                                   <v-col cols="4">
-                                                       <v-text-field 
+                                                       <v-text-field
+                                                            v-if="riesgoNutricio.consumo_alcohol"
                                                             :rules="rules.required" 
                                                             required  
                                                             label="Cantidad"
@@ -427,12 +420,16 @@
                                                   </v-col>
                                                   <v-col cols="10">
                                                        <v-textarea 
+                                                            :rules="rules.required" 
+                                                            required  
                                                             label="Diagnóstico"
                                                             v-model="riesgoNutricio.diagnostico"
                                                        ></v-textarea>
                                                   </v-col>
                                                   <v-col cols="10">
                                                        <v-text-field 
+                                                            :rules="rules.required" 
+                                                            required  
                                                             label="Institución(Hospital)"
                                                             v-model="riesgoNutricio.institucion"
                                                        ></v-text-field>
