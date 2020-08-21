@@ -24,13 +24,11 @@
                               <h3 class=" white--text">
                                    Menú
                               </h3>
-                              <!-- <v-divider class="mx-5"></v-divider> -->
                     </v-col>
                </v-row>
                <v-list >
                     <!-- @click="drawer = !drawer"  -->
-                    <v-list-item v-for="(item, index) in items" 
-                    :key="index" :to="item.to">
+                    <v-list-item v-for="(item, index) in items" :key="index" :to="item.to">
                          <v-list-item-icon>
                               <v-icon class="ml-3" >{{item.icon}}</v-icon>
                          </v-list-item-icon>
@@ -38,6 +36,7 @@
                               <v-list-item-title class=" white--text">{{item.title}}</v-list-item-title>
                          </v-list-item-content>
                     </v-list-item>
+
                     <v-list-item @click="cerrarSesion" class="error mt-5">
                          <v-list-item-icon>
                               <v-icon class="ml-3">fas fa-sign-out-alt</v-icon>
@@ -46,6 +45,7 @@
                               <v-list-item-title class="white--text">Cerrar Sesión</v-list-item-title>
                          </v-list-item-content>
                     </v-list-item>
+                    
                </v-list>
           </v-navigation-drawer>
      </div>

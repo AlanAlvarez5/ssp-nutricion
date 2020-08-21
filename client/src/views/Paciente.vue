@@ -574,10 +574,12 @@
                               </v-tab-item>
                               <v-tab-item :key="3">
                                    <v-form v-model="criterios">
-                                        <h2>
-                                             Si el estudiante cumple por lo menos uno de los siguientes criterios, será candidato a iniciar proceso de orienteación alimentaria individual
-                                        </h2>
                                         <v-container>
+                                             <v-row justify="center" align="center">
+                                                  <v-col cols="8">
+                                                            Si el estudiante cumple por lo menos uno de los siguientes criterios, será candidato a iniciar proceso de orienteación alimentaria individual
+                                                  </v-col>
+                                             </v-row>
                                              <v-row justify="center" align="center">
                                                   <v-col cols="10">
                                                        <v-checkbox 

@@ -1,13 +1,11 @@
 <template>
+     <!-- Componente de Calendario -->
      <div>
           <v-row class="fill-height">
                <v-col>
                     <v-sheet height="64" v-if="!dashboard">
                          <v-toolbar flat color="white">
-                         
-                              <v-btn  class="mr-4" color="primary" dark @click="setToday">
-                              Hoy
-                              </v-btn>
+                              <v-btn  class="mr-4" color="primary" dark @click="setToday">Hoy</v-btn>
                               <v-btn fab text small color="grey darken-2" @click="prev">
                                    <v-icon small>fas fa-arrow-left</v-icon>
                               </v-btn>
@@ -15,38 +13,36 @@
                                    <v-icon small>fas fa-arrow-right</v-icon>
                               </v-btn>
                               <v-toolbar-title v-if="$refs.calendar">
-                              {{ $refs.calendar.title }}
+                                   {{ $refs.calendar.title }}
                               </v-toolbar-title>
+
                               <v-spacer></v-spacer>
+
                               <v-btn class="mr-3" @click="cita.agregar = true; cita.editar = true" dark color="purple">
                                    <v-icon class="mr-3">fas fa-calendar-plus</v-icon>
                                    Nueva<br>Consulta
                               </v-btn>
                               <v-menu bottom right>
-                              <template v-slot:activator="{ on, attrs }">
-                              <v-btn
-                                   color="primary"
-                                   v-bind="attrs"
-                                   v-on="on"
-                              >
-                                   <v-icon left>fas fa-caret-down</v-icon>
-                                   <span>{{ typeToLabel[type] }}</span>
-                              </v-btn>
-                              </template>
-                              <v-list>
-                              <v-list-item @click="type = 'day'">
-                                   <v-list-item-title>Día</v-list-item-title>
-                              </v-list-item>
-                              <v-list-item @click="type = 'week'">
-                                   <v-list-item-title>Semana</v-list-item-title>
-                              </v-list-item>
-                              <v-list-item @click="type = 'month'">
-                                   <v-list-item-title>Mes</v-list-item-title>
-                              </v-list-item>
-                              <v-list-item @click="type = '4day'">
-                                   <v-list-item-title>4 días</v-list-item-title>
-                              </v-list-item>
-                              </v-list>
+                                   <template v-slot:activator="{ on, attrs }">
+                                        <v-btn color="primary" v-bind="attrs" v-on="on">
+                                             <v-icon left>fas fa-caret-down</v-icon>
+                                             <span>{{ typeToLabel[type] }}</span>
+                                        </v-btn>
+                                   </template>
+                                   <v-list>
+                                        <v-list-item @click="type = 'day'">
+                                             <v-list-item-title>Día</v-list-item-title>
+                                        </v-list-item>
+                                        <v-list-item @click="type = 'week'">
+                                             <v-list-item-title>Semana</v-list-item-title>
+                                        </v-list-item>
+                                        <v-list-item @click="type = 'month'">
+                                             <v-list-item-title>Mes</v-list-item-title>
+                                        </v-list-item>
+                                        <v-list-item @click="type = '4day'">
+                                             <v-list-item-title>4 días</v-list-item-title>
+                                        </v-list-item>
+                                   </v-list>
                               </v-menu>
                          </v-toolbar>
                     </v-sheet>
@@ -88,7 +84,9 @@
                                         <v-toolbar-title>
                                              {{selectedEvent.name}}
                                         </v-toolbar-title>
+
                                         <v-spacer></v-spacer>
+
                                         <v-tooltip bottom>
                                              <template v-slot:activator="{ on, attrs }">
                                              <v-btn
@@ -121,16 +119,16 @@
                                         </v-tooltip>
                                         <v-tooltip bottom>
                                              <template v-slot:activator="{ on, attrs }">
-                                             <v-btn
-                                                  icon
-                                                  dark
-                                                  @click="cancelarConsultaDialog(selectedEvent)"
-                                                  v-bind="attrs"
-                                                  v-on="on"
-                                             >
-                                             
-                                                  <v-icon>fas fa-trash-alt</v-icon>
-                                             </v-btn>
+                                                  <v-btn
+                                                       icon
+                                                       dark
+                                                       @click="cancelarConsultaDialog(selectedEvent)"
+                                                       v-bind="attrs"
+                                                       v-on="on"
+                                                  >
+                                                  
+                                                       <v-icon>fas fa-trash-alt</v-icon>
+                                                  </v-btn>
                                              </template>
                                              <span>Cancelar</span>
                                         </v-tooltip>
@@ -334,8 +332,6 @@ import { mapState } from 'vuex'
 
 export default {
      name: 'Calendario',
-     components:{
-     },
      props:{
           dashboard: {
                type: Boolean,
@@ -474,15 +470,10 @@ export default {
                     hora_i: event.hora,
                     nua: event.nua
                }
-               // console.log(body)
                this.axios.post('http://localhost:3000/api/consulta/delete', body, this.config)
                     .then(res => {
-                         // this.events = []
-                         // this.$router.go()
                          this.updateRange({start : this.calendar_start, end : this.calendar_end})
                          this.cita.eliminar = false
-                         // this.$router.push({name: 'Consultas'}).catch(() => {})
-                         // vm.$forceUpdate();
                     })
                     .catch(e => {
                          console.log(e)
@@ -516,9 +507,6 @@ export default {
                     this.cita.nua = ''
                     this.cita.agregar = false
                     this.cita.editar = false
-                    // this.mensaje = ''
-                    // this.alert = false
-                    // this.openDialog = false
                },
           agregarCita(){
 
@@ -531,32 +519,12 @@ export default {
                }
                this.axios.post('http://localhost:3000/api/consulta/nuevo', body, this.config)
                     .then(res => {
-                         // console.log('mensaje', res.data.mensaje)
-                         // if (res.data.mensaje == 'Consulta Existente'){
-                         //      this.mensaje = 'Horario no disponible'
-                         //      this.alert = true
-                         //      this.type = 'error'
-
-                         // }else{
-                         //      this.mensaje = 'Consulta agregada'
-                         //      this.alert = true
-                         //      this.type = 'success'
-                         //      setTimeout(() => {
-                                   
-                         //           this.cancelar()
-                         //           // this.$router.push({name: 'Consultas'})
-                         //           this.$router.go()
-                         //      }, 1500)
-                         // }
                          this.cita.agregar = false
                          this.cita.editar = false
                          this.updateRange({start : this.calendar_start, end : this.calendar_end})
                          this.cancelar()
                     })
                     .catch(e => {
-                         // this.mensaje = `Error de conexión. Imposible agregar.`
-                         // this.alert = true
-                         // this.type = 'error'
                          console.log(e)
                     })
           },

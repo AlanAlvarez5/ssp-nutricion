@@ -2,7 +2,6 @@
      <v-container>
           <h1>Consultas</h1>
           <Calendario :dashboard="false" :height="650"></Calendario>
-
      </v-container>
 </template>
 

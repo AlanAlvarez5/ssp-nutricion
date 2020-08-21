@@ -549,42 +549,13 @@ export default {
           },
           cancelar(){
                this.paciente = {
-                    nua                 : '',
                     contacto_id         : 0,
-                    nombres             : '',
-                    apellido_p          : '',
-                    apellido_m          : '',
-                    genero              : '',
-                    edad                : '',
-                    estado_civil        : '',
-                    fecha_nacimiento    : '',
-                    ciudad_nacimiento   : '' ,
-                    estado_nacimiento   : '',
-                    domicilio_residencia: '',
-                    domicilio_origen    : '',
                     nombre_division     : 'DICIS',
-                    programa_educativo  : '',
-                    periodo             : '',
-                    fecha_ingreso       : '',
-                    correo              : '',
-                    descubrimiento      : '',
-                    disponibilidad      : '',
                     estado_nutri        : 'Activo',
                     fecha_cierre        : null,
                     causas_cierre       : null
                }
-               this.contacto = {
-                    id        : '',
-                    nombres   : '',
-                    apellido_p: '',
-                    apellido_m: '',
-                    telefono  : '',
-                    correo    : '',
-                    direccion : '',
-                    colonia   : '',
-                    ciudad    : '',
-                    estado    : ''
-               }
+               this.contacto = {}
                this.estado = '',
                this.contacto_estado = ''
                this.nuevoPaciente = false

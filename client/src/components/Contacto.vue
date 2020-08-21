@@ -36,9 +36,6 @@
                     </v-col>
                </v-row>
           </v-container>
-
-
-          <!-- {{contacto}} -->
      </v-card>
 </template>
 
